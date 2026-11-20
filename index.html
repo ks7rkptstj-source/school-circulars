@@ -12,13 +12,15 @@ body{margin:0;background:#f3f6f4;color:#24352c;font-family:Tahoma,Arial}
 header{background:linear-gradient(135deg,#064b36,#16865a);color:white;text-align:center;padding:24px 12px}
 header h2{font-size:20px;margin:8px 0}
 header p{margin:5px;font-size:13px}
-.container{max-width:900px;margin:auto;padding:15px}
+.container{max-width:950px;margin:auto;padding:15px}
 .card{background:white;border-radius:14px;padding:18px;margin:14px 0;box-shadow:0 3px 12px #0001}
 h3{color:#087348;margin-top:0}
 label{display:block;font-weight:bold;margin:12px 0 6px;font-size:14px}
 input,textarea,select{width:100%;padding:12px;border:1px solid #d5dfd8;border-radius:9px;font:inherit;background:white}
+input[type=checkbox]{width:auto;transform:scale(1.2);margin-left:8px}
 textarea{min-height:90px}
 button{border:0;border-radius:9px;padding:12px 17px;margin:4px;font:inherit;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
 .primary{background:#087348;color:white}
 .secondary{background:#e9f2ed;color:#075b3c}
 .danger{background:#fce8e8;color:#a52b2b}
@@ -30,6 +32,15 @@ button{border:0;border-radius:9px;padding:12px 17px;margin:4px;font:inherit;curs
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .stat{background:#edf6f0;padding:15px;border-radius:10px;text-align:center}
 .stat b{display:block;font-size:23px;color:#087348;margin-top:6px}
+.employee-list{border:1px solid #e1e9e3;border-radius:10px;margin-top:12px;max-height:350px;overflow:auto}
+.employee{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border-bottom:1px solid #edf1ee}
+.employee:last-child{border-bottom:0}
+.employee-info{flex:1}
+.employee-info strong{display:block;font-size:14px}
+.employee-info span{font-size:12px;color:#718078}
+.employee label{display:flex;align-items:center;margin:0;font-weight:normal}
+.selection-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0}
+.selection-tools button{margin:0}
 footer{text-align:center;padding:22px;font-size:13px;color:#35664c;line-height:2}
 </style>
 </head>
@@ -54,12 +65,10 @@ footer{text-align:center;padding:22px;font-size:13px;color:#35664c;line-height:2
 <p id="loginMsg" class="small"></p>
 </div>
 
-<!-- صفحة إعادة تعيين كلمة المرور -->
 <div id="resetBox" class="card hidden">
 <h3>تعيين كلمة مرور جديدة</h3>
-<p class="small">أدخل كلمة المرور الجديدة لحساب مدير المنصة.</p>
 <label>كلمة المرور الجديدة</label>
-<input id="newPassword" type="password" placeholder="أدخل كلمة المرور الجديدة">
+<input id="newPassword" type="password" placeholder="8 أحرف على الأقل">
 <label>تأكيد كلمة المرور</label>
 <input id="confirmPassword" type="password" placeholder="أعد كتابة كلمة المرور">
 <button class="primary" style="width:100%" onclick="saveNewPassword()">حفظ كلمة المرور الجديدة</button>
@@ -81,35 +90,66 @@ footer{text-align:center;padding:22px;font-size:13px;color:#35664c;line-height:2
 
 <div class="card">
 <h3>إنشاء تعميم جديد</h3>
+
 <label>رقم التعميم</label>
 <input id="number" placeholder="رقم التعميم">
+
 <label>تاريخ التعميم</label>
 <input id="date" type="date">
+
 <label>موضوع التعميم</label>
 <input id="subject" placeholder="موضوع التعميم">
+
 <label>الجهة المصدرة</label>
 <input id="authority" placeholder="الوزارة أو إدارة التعليم">
+
 <label>محتوى التعميم</label>
 <textarea id="content" placeholder="اكتب محتوى التعميم"></textarea>
+
 <label>الفئة المستهدفة</label>
 <select id="target">
 <option>جميع الموظفين</option>
 <option>المعلمون</option>
 <option>الإداريون</option>
 </select>
+
 <label>ملاحظات للمستلمين</label>
 <textarea id="note" placeholder="ملاحظات اختيارية"></textarea>
+
 <label>ملف التعميم PDF (اختياري)</label>
 <input id="pdf" type="file" accept="application/pdf">
-<button class="primary" style="width:100%" onclick="createCircular()">حفظ التعميم</button>
+
+<div class="card" style="background:#f8fbf9;box-shadow:none;border:1px solid #e1e9e3">
+<h3>تحديد مستلمي التعميم</h3>
+<p class="small">اختر الموظفين الذين تريد تخصيص التعميم لهم. الموظفون غير المحددين لن تتم إضافتهم إلى قائمة المستلمين.</p>
+
+<div class="selection-tools">
+<button class="secondary" onclick="selectAllEmployees(true)">تحديد الجميع</button>
+<button class="secondary" onclick="selectAllEmployees(false)">إلغاء تحديد الجميع</button>
+</div>
+
+<label>البحث باسم الموظف</label>
+<input id="employeeSearch" type="search" placeholder="اكتب اسم الموظف للبحث">
+
+<p class="small">عدد الموظفين في السجل: <b id="employeeTotal">0</b></p>
+<div id="employeeList" class="employee-list">
+<p class="small" style="padding:12px">جارٍ تحميل الموظفين...</p>
+</div>
+<p class="small">عدد المستلمين المحددين: <b id="selectedCount">0</b></p>
+<p id="employeeMsg" class="small"></p>
+<button class="secondary" onclick="loadEmployees()">تحديث قائمة الموظفين</button>
+</div>
+
+<button class="primary" style="width:100%" onclick="createCircular()">حفظ التعميم والمستلمين المحددين</button>
 <p id="createMsg" class="small"></p>
 </div>
 
 <div class="card">
-<h3>سجل التعاميم</h3>
+<h3>سجل التعاميم المحفوظة</h3>
 <button class="secondary" onclick="loadCirculars()">تحديث السجل</button>
 <div id="circularList"><p class="small">جارٍ تحميل التعاميم...</p></div>
 </div>
+
 </div>
 
 <footer>
@@ -120,12 +160,21 @@ footer{text-align:center;padding:22px;font-size:13px;color:#35664c;line-height:2
 </div>
 
 <script>
-const SUPABASE_URL = "https://dfraanyolhzqqypkkcbn.supabase.co";
-const SUPABASE_KEY = "sb_publishable_lP0Hcv0OKe2PWnksDigP2Q_KaWxmfCV";
-const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const SUPABASE_URL="https://dfraanyolhzqqypkkcbn.supabase.co";
+const SUPABASE_KEY="sb_publishable_lP0Hcv0OKe2PWnksDigP2Q_KaWxmfCV";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+let employees=[];
+let selectedEmployeeIds=new Set();
 
 function msg(id,text){
  document.getElementById(id).textContent=text;
+}
+
+function escapeHTML(value){
+ return String(value??"").replace(/[&<>"']/g,c=>({
+ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ })[c]);
 }
 
 function showResetPage(){
@@ -148,8 +197,7 @@ async function saveNewPassword(){
  }
 
  msg("resetMsg","جارٍ حفظ كلمة المرور...");
-
- const {error}=await db.auth.updateUser({password:password});
+ const {error}=await db.auth.updateUser({password});
 
  if(error){
   msg("resetMsg","تعذر تغيير كلمة المرور: "+error.message);
@@ -158,21 +206,28 @@ async function saveNewPassword(){
 
  await db.auth.signOut();
  history.replaceState(null,"",location.pathname+location.search);
-
  document.getElementById("resetBox").classList.add("hidden");
  document.getElementById("login").classList.remove("hidden");
  document.getElementById("password").value="";
- msg("loginMsg","تم تغيير كلمة المرور بنجاح. سجل دخولك بكلمة المرور الجديدة.");
+ msg("loginMsg","تم تغيير كلمة المرور بنجاح. سجل دخولك.");
 }
 
 async function login(){
  const email=document.getElementById("email").value.trim();
  const password=document.getElementById("password").value;
- if(!email||!password){msg("loginMsg","أدخل البريد وكلمة المرور");return;}
+
+ if(!email||!password){
+  msg("loginMsg","أدخل البريد وكلمة المرور.");
+  return;
+ }
 
  msg("loginMsg","جارٍ تسجيل الدخول...");
  const {error}=await db.auth.signInWithPassword({email,password});
- if(error){msg("loginMsg","تعذر الدخول: "+error.message);return;}
+
+ if(error){
+  msg("loginMsg","تعذر الدخول: "+error.message);
+  return;
+ }
  await checkSession();
 }
 
@@ -195,8 +250,7 @@ async function checkSession(){
   return;
  }
 
- const {data:admin,error}=await db
-  .from("notif_admins")
+ const {data:admin,error}=await db.from("notif_admins")
   .select("user_id")
   .eq("user_id",session.user.id)
   .maybeSingle();
@@ -210,90 +264,210 @@ async function checkSession(){
  document.getElementById("login").classList.add("hidden");
  document.getElementById("resetBox").classList.add("hidden");
  document.getElementById("app").classList.remove("hidden");
+
+ await loadEmployees();
  await loadCirculars();
 }
+
+async function loadEmployees(){
+ const list=document.getElementById("employeeList");
+ list.innerHTML='<p class="small" style="padding:12px">جارٍ تحميل الموظفين...</p>';
+
+ const {data,error}=await db.from("notif_employees")
+  .select("id,full_name,job_title,specialization,phone")
+  .order("full_name",{ascending:true});
+
+ if(error){
+  list.innerHTML='<p class="small" style="padding:12px">تعذر تحميل الموظفين: '+escapeHTML(error.message)+'</p>';
+  msg("employeeMsg","تحقق من صلاحيات جدول الموظفين.");
+  return;
+ }
+
+ employees=data||[];
+ const validIds=new Set(employees.map(e=>e.id));
+ selectedEmployeeIds=new Set([...selectedEmployeeIds].filter(id=>validIds.has(id)));
+
+ document.getElementById("employeeTotal").textContent=employees.length;
+ renderEmployees();
+}
+
+function renderEmployees(){
+ const list=document.getElementById("employeeList");
+ const search=document.getElementById("employeeSearch").value.trim().toLowerCase();
+
+ const filtered=employees.filter(e=>
+  String(e.full_name||"").toLowerCase().includes(search) ||
+  String(e.job_title||"").toLowerCase().includes(search)
+ );
+
+ if(!filtered.length){
+  list.innerHTML='<p class="small" style="padding:12px">لا توجد نتائج مطابقة.</p>';
+  updateSelectedCount();
+  return;
+ }
+
+ list.innerHTML="";
+
+ filtered.forEach(e=>{
+  const row=document.createElement("div");
+  row.className="employee";
+
+  const info=document.createElement("div");
+  info.className="employee-info";
+  info.innerHTML="<strong>"+escapeHTML(e.full_name)+"</strong><span>"+escapeHTML(e.job_title||"المسمى غير محدد")+"</span>";
+
+  const label=document.createElement("label");
+  const checkbox=document.createElement("input");
+  checkbox.type="checkbox";
+  checkbox.checked=selectedEmployeeIds.has(e.id);
+
+  checkbox.addEventListener("change",()=>{
+   if(checkbox.checked) selectedEmployeeIds.add(e.id);
+   else selectedEmployeeIds.delete(e.id);
+   updateSelectedCount();
+  });
+
+  label.appendChild(checkbox);
+  label.appendChild(document.createTextNode("اختيار"));
+
+  row.appendChild(info);
+  row.appendChild(label);
+  list.appendChild(row);
+ });
+
+ updateSelectedCount();
+}
+
+function updateSelectedCount(){
+ document.getElementById("selectedCount").textContent=selectedEmployeeIds.size;
+}
+
+function selectAllEmployees(value){
+ employees.forEach(e=>{
+  if(value) selectedEmployeeIds.add(e.id);
+  else selectedEmployeeIds.delete(e.id);
+ });
+ renderEmployees();
+}
+
+document.getElementById("employeeSearch").addEventListener("input",renderEmployees);
 
 async function createCircular(){
  const subject=document.getElementById("subject").value.trim();
  const content=document.getElementById("content").value.trim();
  const file=document.getElementById("pdf").files[0];
+ const selected=[...selectedEmployeeIds];
 
- if(!subject){msg("createMsg","أدخل موضوع التعميم");return;}
- if(file && file.type!=="application/pdf"){
-  msg("createMsg","يرجى اختيار ملف PDF فقط");return;
+ if(!subject){
+  msg("createMsg","أدخل موضوع التعميم.");
+  return;
  }
 
+ if(!selected.length){
+  msg("createMsg","حدد موظفًا واحدًا على الأقل لاستلام التعميم.");
+  return;
+ }
+
+ if(file&&file.type!=="application/pdf"){
+  msg("createMsg","يرجى اختيار ملف PDF فقط.");
+  return;
+ }
+
+ const button=document.querySelector('button[onclick="createCircular()"]');
+ button.disabled=true;
  msg("createMsg","جارٍ حفظ التعميم...");
+
  let pdfPath=null;
 
- if(file){
-  const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
-  const path="circulars/"+crypto.randomUUID()+"-"+safeName;
-  const {error:uploadError}=await db.storage
-   .from("notif-files").upload(path,file,{contentType:"application/pdf"});
+ try{
+  if(file){
+   const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
+   pdfPath="circulars/"+crypto.randomUUID()+"-"+safeName;
 
-  if(uploadError){
-   msg("createMsg","تعذر رفع الملف: "+uploadError.message);return;
+   const {error:uploadError}=await db.storage.from("notif-files")
+    .upload(pdfPath,file,{contentType:"application/pdf"});
+
+   if(uploadError) throw new Error("تعذر رفع الملف: "+uploadError.message);
   }
-  pdfPath=path;
+
+  const record={
+   circular_number:document.getElementById("number").value.trim(),
+   circular_date:document.getElementById("date").value||null,
+   subject,
+   issuing_authority:document.getElementById("authority").value.trim(),
+   recipient_note:document.getElementById("note").value.trim(),
+   content,
+   target:document.getElementById("target").value,
+   pdf_path:pdfPath,
+   status:"draft"
+  };
+
+  const {data:circular,error}=await db.from("notif_circulars")
+   .insert(record).select("id").single();
+
+  if(error) throw new Error("تعذر حفظ التعميم: "+error.message);
+
+  const recipientRows=selected.map(employeeId=>({
+   circular_id:circular.id,
+   employee_id:employeeId,
+   access_token:crypto.randomUUID(),
+   status:"pending"
+  }));
+
+  const {error:recipientError}=await db.from("notif_recipients")
+   .insert(recipientRows);
+
+  if(recipientError){
+   await db.from("notif_circulars").delete().eq("id",circular.id);
+   throw new Error("تم إنشاء التعميم لكن تعذر حفظ المستلمين: "+recipientError.message);
+  }
+
+  ["number","subject","authority","content","note","pdf"].forEach(id=>{
+   document.getElementById(id).value="";
+  });
+
+  selectedEmployeeIds.clear();
+  renderEmployees();
+
+  msg("createMsg","تم حفظ التعميم وربطه بـ "+selected.length+" موظفًا. التعميم محفوظ كمسودة ولم يتم إرساله بعد.");
+  await loadCirculars();
+
+ }catch(error){
+  msg("createMsg",error.message);
+ }finally{
+  button.disabled=false;
  }
-
- const record={
-  circular_number:document.getElementById("number").value.trim(),
-  circular_date:document.getElementById("date").value||null,
-  subject:subject,
-  issuing_authority:document.getElementById("authority").value.trim(),
-  recipient_note:document.getElementById("note").value.trim(),
-  content:content,
-  target:document.getElementById("target").value,
-  pdf_path:pdfPath,
-  status:"draft"
- };
-
- const {error}=await db.from("notif_circulars").insert(record);
-
- if(error){
-  msg("createMsg","تعذر حفظ التعميم: "+error.message);return;
- }
-
- ["number","subject","authority","content","note","pdf"].forEach(id=>{
-  document.getElementById(id).value="";
- });
- msg("createMsg","تم حفظ التعميم بنجاح.");
- await loadCirculars();
-}
-
-function escapeHTML(value){
- return String(value ?? "").replace(/[&<>"']/g,c=>({
- "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- })[c]);
 }
 
 async function loadCirculars(){
+ const list=document.getElementById("circularList");
+ list.innerHTML='<p class="small">جارٍ تحميل التعاميم...</p>';
+
  const {data,error}=await db.from("notif_circulars")
   .select("*").order("created_at",{ascending:false});
 
  if(error){
-  document.getElementById("circularList").innerHTML=
-   '<p class="small">تعذر تحميل البيانات: '+escapeHTML(error.message)+'</p>';
+  list.innerHTML='<p class="small">تعذر تحميل البيانات: '+escapeHTML(error.message)+'</p>';
   return;
  }
 
  const rows=data||[];
  document.getElementById("total").textContent=rows.length;
- document.getElementById("pending").textContent=
-  rows.filter(x=>x.status==="draft").length;
+ document.getElementById("pending").textContent=rows.filter(x=>x.status==="draft").length;
 
- const list=document.getElementById("circularList");
  if(!rows.length){
   list.innerHTML='<p class="small">لا توجد تعاميم حتى الآن.</p>';
   return;
  }
 
  list.innerHTML="";
+
  for(const c of rows){
+  const {count}=await db.from("notif_recipients")
+   .select("id",{count:"exact",head:true})
+   .eq("circular_id",c.id);
+
   const approved=c.status==="approved";
-  const status=approved?"معتمد":"مسودة بانتظار الاعتماد";
   const item=document.createElement("div");
   item.className="item";
 
@@ -304,8 +478,9 @@ async function loadCirculars(){
    <p>${escapeHTML(c.content||"")}</p>
    <p class="small">الجهة: ${escapeHTML(c.issuing_authority||"غير محددة")}</p>
    <p class="small">الفئة المستهدفة: ${escapeHTML(c.target||"غير محددة")}</p>
-   <span class="status ${approved?"approved":""}">${status}</span>
-   <div class="actions"></div>`;
+   <p class="small">عدد المستلمين المحددين: ${count??0}</p>
+   <span class="status ${approved?"approved":""}">${approved?"معتمد":c.status==="sent"?"مرسل":c.status==="closed"?"مغلق":"مسودة بانتظار الاعتماد"}</span>
+   <div class="actions" style="margin-top:12px"></div>`;
 
   const actions=item.querySelector(".actions");
 
@@ -317,7 +492,7 @@ async function loadCirculars(){
    actions.appendChild(fileButton);
   }
 
-  if(!approved){
+  if(c.status==="draft"){
    const approveButton=document.createElement("button");
    approveButton.className="primary";
    approveButton.textContent="اعتماد التعميم";
@@ -325,14 +500,22 @@ async function loadCirculars(){
    actions.appendChild(approveButton);
   }
 
+  const deleteButton=document.createElement("button");
+  deleteButton.className="danger";
+  deleteButton.textContent="حذف التعميم";
+  deleteButton.onclick=()=>deleteCircular(c);
+  actions.appendChild(deleteButton);
+
   list.appendChild(item);
  }
 }
 
 async function openPDF(path){
- const {data,error}=await db.storage.from("notif-files")
-  .createSignedUrl(path,300);
- if(error){alert("تعذر فتح الملف: "+error.message);return;}
+ const {data,error}=await db.storage.from("notif-files").createSignedUrl(path,300);
+ if(error){
+  alert("تعذر فتح الملف: "+error.message);
+  return;
+ }
  window.open(data.signedUrl,"_blank","noopener");
 }
 
@@ -342,15 +525,59 @@ async function approveCircular(id){
  const {error}=await db.from("notif_circulars")
   .update({status:"approved"}).eq("id",id);
 
- if(error){alert("تعذر الاعتماد: "+error.message);return;}
+ if(error){
+  alert("تعذر الاعتماد: "+error.message);
+  return;
+ }
  await loadCirculars();
 }
 
-document.getElementById("date").value=
- new Date().toLocaleDateString("en-CA");
+async function deleteCircular(c){
+ const yes=confirm("هل أنت متأكد من حذف هذا التعميم؟ سيتم حذف سجل المستلمين وإقرارات الاستلام المرتبطة به أيضًا. لا يمكن التراجع عن الحذف.");
+ if(!yes)return;
+
+ try{
+  const {data:recipients,error:recipientReadError}=await db.from("notif_recipients")
+   .select("id").eq("circular_id",c.id);
+
+  if(recipientReadError) throw recipientReadError;
+
+  const recipientIds=(recipients||[]).map(r=>r.id);
+
+  if(recipientIds.length){
+   const {error:receiptError}=await db.from("notif_receipts")
+    .delete().in("recipient_id",recipientIds);
+
+   if(receiptError) throw receiptError;
+
+   const {error:recipientsDeleteError}=await db.from("notif_recipients")
+    .delete().eq("circular_id",c.id);
+
+   if(recipientsDeleteError) throw recipientsDeleteError;
+  }
+
+  const {error:circularError}=await db.from("notif_circulars")
+   .delete().eq("id",c.id);
+
+  if(circularError) throw circularError;
+
+  if(c.pdf_path){
+   const {error:storageError}=await db.storage.from("notif-files").remove([c.pdf_path]);
+   if(storageError) console.warn("تعذر حذف ملف PDF:",storageError.message);
+  }
+
+  alert("تم حذف التعميم وسجلات المستلمين المرتبطة به.");
+  await loadCirculars();
+
+ }catch(error){
+  alert("تعذر إكمال الحذف: "+error.message);
+ }
+}
+
+document.getElementById("date").value=new Date().toLocaleDateString("en-CA");
 
 db.auth.onAuthStateChange((event)=>{
- if(event==="PASSWORD_RECOVERY" || location.hash.includes("type=recovery")){
+ if(event==="PASSWORD_RECOVERY"||location.hash.includes("type=recovery")){
   showResetPage();
  }else if(event==="SIGNED_IN"){
   setTimeout(checkSession,0);
