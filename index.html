@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#123f35">
+<title>منصة تبليغات وتعاميم مدرسة عبدالله بن مسعود</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--green:#17634d;--green2:#0f493a;--navy:#17324d;--gold:#c5a45b;--bg:#f3f6f5;--ink:#1e2c33;--muted:#718087;--line:#e3eae7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Cairo",Tahoma,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.top{background:linear-gradient(115deg,var(--green2),var(--navy));color:white;padding:22px 18px 26px;border-bottom:4px solid var(--gold)}
+.topin{max-width:1180px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:13px}
+.seal{width:54px;height:54px;border:1px solid #ffffff70;border-radius:16px;display:grid;place-items:center;font-size:25px;background:#ffffff12}
+.brand h1{font-size:18px;margin:0 0 3px;font-weight:800}
+.brand p{font-size:12px;margin:0;color:#e1e9e6;line-height:1.8}
+.headtag{font-size:12px;border:1px solid #ffffff55;border-radius:30px;padding:7px 12px}
+.wrap{max-width:1180px;margin:22px auto;padding:0 16px 40px}
+.notice{background:#fff8e8;border:1px solid #ead9ac;color:#705b2b;border-radius:12px;padding:11px 14px;font-size:12px;line-height:1.9;margin-bottom:17px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:18px}
+.stat,.panel{background:white;border:1px solid var(--line);border-radius:15px;box-shadow:0 3px 12px #18372b08}
+.stat{padding:15px 17px;display:flex;align-items:center;gap:12px}
+.ico{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:#eaf3ef;color:var(--green);font-size:20px}
+.stat small{display:block;color:var(--muted);font-size:11px}
+.stat strong{font-size:22px;color:var(--navy)}
+.layout{display:grid;grid-template-columns:220px 1fr;gap:16px;align-items:start}
+nav{background:white;border:1px solid var(--line);border-radius:15px;padding:10px;position:sticky;top:12px}
+nav button{width:100%;border:0;background:transparent;text-align:right;padding:12px 13px;border-radius:10px;color:#52636a;font-weight:700;font-size:13px;margin:2px 0}
+nav button.active,nav button:hover{background:#eaf3ef;color:var(--green)}
+nav .navtitle{font-size:11px;color:#9aa5a8;padding:10px 12px 4px}
+main{min-width:0}
+.panel{padding:19px;margin-bottom:15px}
+.panelhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.panel h2{font-size:17px;color:var(--navy);margin:0}
+.sub{font-size:12px;color:var(--muted);margin-top:4px}
+.btn{border:0;border-radius:10px;padding:9px 15px;font-weight:700;font-size:12px}
+.primary{background:var(--green);color:white}
+.secondary{background:#eaf1ee;color:var(--green)}
+.outline{background:white;border:1px solid var(--line);color:var(--navy)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.field label{display:block;font-size:12px;font-weight:700;margin:0 0 6px;color:#42545b}
+.field input,.field select,.field textarea,.search{width:100%;border:1px solid #dce5e1;border-radius:9px;padding:10px 11px;background:#fff;outline:none;font-size:13px}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#75a894;box-shadow:0 0 0 3px #17634d12}
+.field textarea{min-height:90px;resize:vertical}
+.full{grid-column:1/-1}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:550px}
+th,td{text-align:right;padding:11px 10px;border-bottom:1px solid var(--line);font-size:12px}
+th{background:#f5f8f6;color:#52636a;font-weight:800}
+.empty{text-align:center;padding:35px 12px;color:var(--muted);font-size:13px}
+.empty b{display:block;color:var(--navy);font-size:14px;margin-bottom:5px}
+.hidden{display:none!important}
+.pill{display:inline-block;background:#f0f3f2;color:#66777b;padding:4px 9px;border-radius:30px;font-size:11px}
+.checklist{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.checkitem{background:#f7faf8;border:1px solid var(--line);padding:7px 10px;border-radius:8px;font-size:12px}
+footer{text-align:center;color:#84918e;font-size:11px;padding:18px 8px 4px}
+@media(max-width:800px){
+.stats{grid-template-columns:repeat(2,1fr)}
+.layout{grid-template-columns:1fr}
+nav{position:static;display:flex;overflow-x:auto;gap:4px;padding:7px}
+nav button{white-space:nowrap;width:auto;min-width:max-content;margin:0}
+nav .navtitle{display:none}
+.topin{align-items:flex-start}
+.headtag{display:none}
+}
+@media(max-width:520px){
+.top{padding:17px 13px 20px}
+.brand h1{font-size:15px}
+.brand p{font-size:10px}
+.seal{width:45px;height:45px}
+.wrap{padding:0 10px 25px;margin-top:13px}
+.stats{gap:8px}
+.stat{padding:11px;gap:8px}
+.stat strong{font-size:19px}
+.ico{width:36px;height:36px}
+.panel{padding:14px}
+.grid2{grid-template-columns:1fr}
+.full{grid-column:auto}
+.panelhead{align-items:flex-start;flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+<div class="topin">
+<div class="brand">
+<div class="seal">📨</div>
+<div>
+<h1>منصة تبليغات وتعاميم مدرسة عبدالله بن مسعود الابتدائية</h1>
+<p>وزارة التعليم · الإدارة العامة للتعليم بمنطقة الجوف</p>
+</div>
+</div>
+<div class="headtag">بوابة الإدارة المدرسية</div>
+</div>
+</header>
+
+<div class="wrap">
+
+<div class="notice">
+<strong>تنبيه:</strong>
+هذه نسخة تأسيسية للواجهة. لم يتم ربطها بقاعدة البيانات بعد، ولن تحفظ البيانات أو ترسل روابط للموظفين قبل استكمال إعداد الاتصال والصلاحيات الآمنة.
+</div>
+
+<section class="stats">
+<div class="stat"><div class="ico">👥</div><div><small>إجمالي الموظفين</small><strong>—</strong></div></div>
+<div class="stat"><div class="ico">📑</div><div><small>إجمالي التعاميم</small><strong>—</strong></div></div>
+<div class="stat"><div class="ico">✍️</div><div><small>تم الاستلام</small><strong>—</strong></div></div>
+<div class="stat"><div class="ico">⏳</div><div><small>بانتظار الاستلام</small><strong>—</strong></div></div>
+</section>
+
+<div class="layout">
+
+<nav aria-label="القائمة الرئيسية">
+<div class="navtitle">القائمة الرئيسية</div>
+<button class="active" data-page="home">⌂　الرئيسية</button>
+<button data-page="employees">♙　سجل الموظفين</button>
+<button data-page="create">＋　إنشاء تعميم</button>
+<button data-page="register">▤　سجل التعاميم</button>
+<button data-page="tracking">✓　متابعة الاستلام</button>
+<button data-page="reports">▧　التقارير</button>
+</nav>
+
+<main>
+
+<section id="home" class="page">
+<div class="panel">
+<div class="panelhead">
+<div>
+<h2>مرحبًا بك في لوحة إدارة التعاميم</h2>
+<div class="sub">إدارة التعاميم ومتابعة استلامها وتوقيع الموظفين إلكترونيًا</div>
+</div>
+<span class="pill">الواجهة الأولية</span>
+</div>
+<div class="grid2">
+<div class="field"><label>حالة الربط</label><input value="بانتظار إعداد الاتصال بقاعدة البيانات" disabled></div>
+<div class="field"><label>حالة إرسال الواتساب</label><input value="لم يتم تفعيل الإرسال بعد" disabled></div>
+</div>
+</div>
+<div class="panel">
+<h2>الخطوات القادمة</h2>
+<div class="checklist">
+<span class="checkitem">١. إعداد دخول المدير</span>
+<span class="checkitem">٢. ربط سجل الموظفين</span>
+<span class="checkitem">٣. رفع ملفات PDF</span>
+<span class="checkitem">٤. روابط استلام خاصة</span>
+<span class="checkitem">٥. التوقيع الإلكتروني</span>
+<span class="checkitem">٦. تقارير الاستلام</span>
+</div>
+</div>
+</section>
+
+<section id="employees" class="page hidden">
+<div class="panel">
+<div class="panelhead">
+<div><h2>سجل الموظفين</h2><div class="sub">إدارة أسماء الموظفين ومعلومات التواصل</div></div>
+<button class="btn primary" onclick="show('employeeForm')">＋ إضافة موظف</button>
+</div>
+<div id="employeeForm" class="hidden">
+<div class="grid2">
+<div class="field"><label>اسم الموظف</label><input placeholder="الاسم كاملًا"></div>
+<div class="field"><label>المسمى الوظيفي</label><input placeholder="مثال: معلم"></div>
+<div class="field"><label>التخصص (اختياري)</label><input placeholder="التخصص"></div>
+<div class="field"><label>رقم الجوال</label><input type="tel" placeholder="05xxxxxxxx"></div>
+</div>
+<div class="actions">
+<button class="btn primary" onclick="alert('سيتم تفعيل الحفظ بعد ربط قاعدة البيانات.')">حفظ الموظف</button>
+<button class="btn outline" onclick="hide('employeeForm')">إلغاء</button>
+</div>
+<p class="sub">الحفظ غير مفعّل في هذه النسخة الأولية.</p>
+</div>
+<div class="empty"><b>لا توجد بيانات معروضة حتى الآن</b>سيظهر سجل الموظفين هنا بعد ربط قاعدة البيانات واستيراد السجل.</div>
+</div>
+</section>
+
+<section id="create" class="page hidden">
+<div class="panel">
+<div class="panelhead">
+<div><h2>إنشاء تعميم جديد</h2><div class="sub">أدخل بيانات التعميم وحدد الموظفين المستلمين</div></div>
+</div>
+<div class="grid2">
+<div class="field"><label>رقم التعميم</label><input placeholder="رقم التعميم"></div>
+<div class="field"><label>تاريخ التعميم</label><input type="date"></div>
+<div class="field full"><label>موضوع التعميم</label><input placeholder="اكتب موضوع التعميم"></div>
+<div class="field"><label>الجهة المصدرة (اختياري)</label><input placeholder="الجهة المصدرة"></div>
+<div class="field"><label>ملف التعميم PDF</label><input type="file" accept="application/pdf"></div>
+<div class="field full"><label>ملاحظات للموظفين (اختياري)</label><textarea placeholder="اكتب ملاحظاتك هنا"></textarea></div>
+</div>
+<div class="panelhead" style="margin-top:20px">
+<div><h2>تحديد المستلمين</h2><div class="sub">سيتم تفعيل البحث والاختيار بعد تحميل سجل الموظفين</div></div>
+</div>
+<div class="empty">اربط سجل الموظفين أولًا لعرض الأسماء وتحديد المستلمين.</div>
+<div class="actions">
+<button class="btn primary" onclick="alert('إنشاء التعميم غير مفعّل حتى استكمال الربط والصلاحيات.')">حفظ مسودة التعميم</button>
+<button class="btn outline" onclick="alert('لن يتم إرسال أي تعميم قبل إعداد الإرسال الآمن.')">إرسال التعميم</button>
+</div>
+</div>
+</section>
+
+<section id="register" class="page hidden">
+<div class="panel">
+<h2>سجل التعاميم</h2>
+<div class="sub">البحث برقم التعميم أو الموضوع أو التاريخ</div>
+<input class="search" style="margin-top:14px" placeholder="ابحث في سجل التعاميم..." disabled>
+<div class="empty"><b>لا توجد تعاميم معروضة</b>سيظهر سجل التعاميم بعد ربط قاعدة البيانات.</div>
+</div>
+</section>
+
+<section id="tracking" class="page hidden">
+<div class="panel">
+<h2>متابعة الاستلام</h2>
+<div class="sub">متابعة حالة كل موظف وروابط الاستلام الخاصة به</div>
+<div class="empty"><b>لا توجد عمليات استلام معروضة</b>ستظهر حالات الاستلام والتوقيعات بعد تفعيل الروابط الخاصة.</div>
+</div>
+</section>
+
+<section id="reports" class="page hidden">
+<div class="panel">
+<h2>تقارير التعاميم</h2>
+<div class="sub">تقرير الاستلام والتوقيعات بصيغة PDF</div>
+<div class="empty"><b>التقارير غير مفعّلة بعد</b>سيتم إعداد التقرير بعد اكتمال ربط قاعدة البيانات والتوقيعات.</div>
+</div>
+</section>
+
+</main>
+</div>
+
+<footer>إعداد وتصميم: مساعد إداري / خالد شاقي الرويلي</footer>
+</div>
+
+<script>
+const navButtons=[...document.querySelectorAll('nav button')];
+
+navButtons.forEach(btn=>btn.addEventListener('click',()=>{
+navButtons.forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
+document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));
+document.getElementById(btn.dataset.page).classList.remove('hidden');
+}));
+
+function show(id){
+document.getElementById(id).classList.remove('hidden');
+}
+function hide(id){
+document.getElementById(id).classList.add('hidden');
+}
+</script>
+
+</body>
+</html>
