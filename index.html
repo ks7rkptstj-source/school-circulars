@@ -24,6 +24,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .primary{background:#087348;color:white}
 .secondary{background:#e9f2ed;color:#075b3c}
 .danger{background:#fce8e8;color:#a52b2b}
+.whatsapp{background:#168b50;color:white}
 .hidden{display:none!important}
 .item{border:1px solid #e1e9e3;border-radius:10px;padding:14px;margin:10px 0}
 .small{font-size:12px;color:#718078;line-height:1.8}
@@ -35,13 +36,23 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .employee-list{border:1px solid #e1e9e3;border-radius:10px;margin-top:12px;max-height:350px;overflow:auto}
 .employee{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border-bottom:1px solid #edf1ee}
 .employee:last-child{border-bottom:0}
-.employee-info{flex:1}
+.employee-info{flex:1;min-width:0}
 .employee-info strong{display:block;font-size:14px}
-.employee-info span{font-size:12px;color:#718078}
+.employee-info span{font-size:12px;color:#718078;overflow-wrap:anywhere}
 .employee label{display:flex;align-items:center;margin:0;font-weight:normal}
 .selection-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0}
 .selection-tools button{margin:0}
+.recipient-whatsapp{border:1px solid #e1e9e3;border-radius:10px;margin-top:10px;overflow:hidden}
+.recipient-whatsapp .employee{flex-wrap:wrap}
+.recipient-whatsapp button{white-space:nowrap}
 footer{text-align:center;padding:22px;font-size:13px;color:#35664c;line-height:2}
+@media(max-width:520px){
+ .container{padding:8px}
+ .card{padding:13px}
+ .employee{align-items:flex-start}
+ .recipient-whatsapp .employee{gap:6px}
+ .recipient-whatsapp button{width:100%;margin:3px 0}
+}
 </style>
 </head>
 <body>
@@ -439,6 +450,44 @@ async function createCircular(){
  }
 }
 
+/* تطبيع رقم الجوال السعودي */
+function normalizeSaudiPhone(phone){
+ let number=String(phone||"").replace(/\D/g,"");
+
+ if(number.startsWith("00")) number=number.slice(2);
+ if(number.startsWith("0")) number="966"+number.slice(1);
+ if(number.startsWith("5")) number="966"+number;
+
+ return number;
+}
+
+/* فتح محادثة واتساب برسالة فردية جاهزة */
+function sendWhatsApp(phone,c,pdfUrl){
+ const number=normalizeSaudiPhone(phone);
+
+ if(!number||number.length<11){
+  alert("رقم جوال الموظف غير صحيح. راجع سجل الموظفين.");
+  return;
+ }
+
+ let message=
+  "السلام عليكم ورحمة الله وبركاته\n"+
+  "نأمل الاطلاع على التعميم الصادر من مدرسة عبدالله بن مسعود الابتدائية.\n\n"+
+  "رقم التعميم: "+(c.circular_number||"غير محدد")+"\n"+
+  "الموضوع: "+(c.subject||"")+"\n"+
+  "التاريخ: "+(c.circular_date||"غير محدد")+"\n";
+
+ if(pdfUrl){
+  message+="\nرابط ملف التعميم:\n"+pdfUrl+"\n";
+ }
+
+ message+="\nشاكرين لكم تعاونكم.";
+
+ const url="https://wa.me/"+number+"?text="+encodeURIComponent(message);
+ window.open(url,"_blank");
+}
+
+/* تحميل سجل التعاميم وأسماء المستلمين وأزرار واتساب */
 async function loadCirculars(){
  const list=document.getElementById("circularList");
  list.innerHTML='<p class="small">جارٍ تحميل التعاميم...</p>';
@@ -453,7 +502,8 @@ async function loadCirculars(){
 
  const rows=data||[];
  document.getElementById("total").textContent=rows.length;
- document.getElementById("pending").textContent=rows.filter(x=>x.status==="draft").length;
+ document.getElementById("pending").textContent=
+  rows.filter(x=>x.status==="draft").length;
 
  if(!rows.length){
   list.innerHTML='<p class="small">لا توجد تعاميم حتى الآن.</p>';
@@ -463,9 +513,43 @@ async function loadCirculars(){
  list.innerHTML="";
 
  for(const c of rows){
-  const {count}=await db.from("notif_recipients")
-   .select("id",{count:"exact",head:true})
+  const {data:recipients,error:recipientError}=await db
+   .from("notif_recipients")
+   .select("id,employee_id,status")
    .eq("circular_id",c.id);
+
+  if(recipientError){
+   console.error(recipientError);
+   continue;
+  }
+
+  const recipientRows=recipients||[];
+  const employeeIds=recipientRows.map(r=>r.employee_id);
+  let people=[];
+
+  if(employeeIds.length){
+   const {data:employeeData,error:employeeError}=await db
+    .from("notif_employees")
+    .select("id,full_name,phone")
+    .in("id",employeeIds);
+
+   if(employeeError){
+    console.error(employeeError);
+   }else{
+    people=employeeData||[];
+   }
+  }
+
+  const employeeMap=new Map(people.map(e=>[e.id,e]));
+  let pdfUrl=null;
+
+  if(c.pdf_path){
+   const {data:fileData,error:fileError}=await db.storage
+    .from("notif-files")
+    .createSignedUrl(c.pdf_path,604800);
+
+   if(!fileError) pdfUrl=fileData.signedUrl;
+  }
 
   const approved=c.status==="approved";
   const item=document.createElement("div");
@@ -478,9 +562,58 @@ async function loadCirculars(){
    <p>${escapeHTML(c.content||"")}</p>
    <p class="small">الجهة: ${escapeHTML(c.issuing_authority||"غير محددة")}</p>
    <p class="small">الفئة المستهدفة: ${escapeHTML(c.target||"غير محددة")}</p>
-   <p class="small">عدد المستلمين المحددين: ${count??0}</p>
-   <span class="status ${approved?"approved":""}">${approved?"معتمد":c.status==="sent"?"مرسل":c.status==="closed"?"مغلق":"مسودة بانتظار الاعتماد"}</span>
-   <div class="actions" style="margin-top:12px"></div>`;
+   <p class="small">عدد المستلمين المحددين: ${recipientRows.length}</p>
+   <span class="status ${approved?"approved":""}">
+    ${approved?"معتمد":c.status==="sent"?"مرسل":c.status==="closed"?"مغلق":"مسودة بانتظار الاعتماد"}
+   </span>
+   <div style="margin-top:16px">
+    <h4 style="color:#087348">إرسال التعميم عبر واتساب</h4>
+    <p class="small">الإرسال فردي من حسابك الشخصي. اضغط الزر أمام اسم الموظف، ثم اضغط إرسال داخل واتساب.</p>
+    <div class="recipient-whatsapp"></div>
+   </div>
+   <div class="actions" style="margin-top:12px"></div>
+  `;
+
+  const recipientBox=item.querySelector(".recipient-whatsapp");
+
+  if(!recipientRows.length){
+   recipientBox.innerHTML='<p class="small" style="padding:12px">لا يوجد مستلمون لهذا التعميم.</p>';
+  }
+
+  recipientRows.forEach(r=>{
+   const employee=employeeMap.get(r.employee_id);
+   const row=document.createElement("div");
+   row.className="employee";
+
+   const info=document.createElement("div");
+   info.className="employee-info";
+
+   const name=document.createElement("strong");
+   name.textContent=employee?.full_name||"موظف غير معروف";
+
+   const phone=document.createElement("span");
+   phone.textContent=employee?.phone||"لا يوجد رقم جوال";
+
+   info.appendChild(name);
+   info.appendChild(phone);
+   row.appendChild(info);
+
+   const sendButton=document.createElement("button");
+   sendButton.className="whatsapp";
+   sendButton.textContent="إرسال واتساب";
+   sendButton.disabled=!employee?.phone||!approved;
+
+   sendButton.onclick=()=>{
+    if(!approved){
+     alert("يجب اعتماد التعميم أولًا.");
+     return;
+    }
+    sendWhatsApp(employee.phone,c,pdfUrl);
+   };
+
+   row.appendChild(sendButton);
+   recipientBox.appendChild(row);
+  });
 
   const actions=item.querySelector(".actions");
 
