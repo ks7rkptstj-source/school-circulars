@@ -34,13 +34,21 @@ th,td{border:1px solid #dce5dd;padding:8px;text-align:right;vertical-align:middl
 th{background:#eaf2ec;color:#155c3c}
 .tablewrap{overflow-x:auto}
 .signature{border:2px dashed #9eafa2;border-radius:9px;background:#fff;width:100%;height:210px;touch-action:none}
+.report-signature{display:block;max-width:150px;max-height:75px;width:auto;height:auto;object-fit:contain;margin:auto}
 footer{text-align:center;color:#66766b;padding:18px;font-size:13px}
 .actions{display:flex;gap:5px;flex-wrap:wrap}
 .circular{border:1px solid #dce6dd;padding:13px;border-radius:10px;margin:10px 0;background:#fff}
 .circular h4{margin:0;color:#176b45}
 .pdfbox{width:100%;height:520px;border:1px solid #ccd8cf;border-radius:8px}
 @media(max-width:600px){.container{margin:10px auto}.card{padding:13px}header h2{font-size:17px}.pdfbox{height:420px}table{font-size:12px}}
-@media print{header,.no-print,footer{display:none!important}body{background:white}.container{max-width:none;margin:0;padding:0}.card{box-shadow:none;border:0}.print-only{display:block!important}}
+@media print{
+ header,.no-print,footer{display:none!important}
+ body{background:white}
+ .container{max-width:none;margin:0;padding:0}
+ .card{box-shadow:none;border:0}
+ .print-only{display:block!important}
+ .report-signature{max-width:120px;max-height:65px}
+}
 </style>
 </head>
 <body>
@@ -54,7 +62,6 @@ footer{text-align:center;color:#66766b;padding:18px;font-size:13px}
 
 <div class="container">
 
-<!-- صفحة الموظف: تظهر قبل التحقق من دخول المدير -->
 <section id="employeePage" class="hidden">
  <div class="card">
   <h3>تبليغ تعميم وطلب الاطلاع والإقرار بالعلم</h3>
@@ -92,7 +99,6 @@ footer{text-align:center;color:#66766b;padding:18px;font-size:13px}
  </div>
 </section>
 
-<!-- تسجيل دخول المدير -->
 <section id="loginPage" class="hidden">
  <div class="card">
   <h3>دخول مدير المنصة</h3>
@@ -106,7 +112,6 @@ footer{text-align:center;color:#66766b;padding:18px;font-size:13px}
  </div>
 </section>
 
-<!-- لوحة المدير -->
 <section id="dashboard" class="hidden">
  <div class="card no-print">
   <div class="row" style="justify-content:space-between;align-items:center">
@@ -173,15 +178,6 @@ footer{text-align:center;color:#66766b;padding:18px;font-size:13px}
    <button onclick="window.print()">طباعة التقرير / حفظ PDF</button>
   </div>
   <div id="reportContent"></div>
-  <div class="print-only">
-   <p>إعداد التقرير: مساعد إداري</p>
-   <p>التوقيع: ........................................</p>
-   <br>
-   <p>اعتماد مدير المدرسة بعد التوقيع على النسخة النهائية:</p>
-   <p>الاسم: ........................................</p>
-   <p>التوقيع: ........................................</p>
-   <p>التاريخ: ........................................</p>
-  </div>
  </div>
 </section>
 </div>
@@ -423,6 +419,7 @@ async function getCircularRecipients(circularId){
  }
  return recipients.map(r=>({...r,receipt:receipts.find(x=>x.recipient_id===r.id)||null}));
 }
+
 async function loadCirculars(){
  $("circularList").textContent="جارٍ تحميل التعاميم...";
  const {data:circulars,error}=await db.from("notif_circulars")
@@ -483,19 +480,70 @@ ${url}
  window.open("https://wa.me/"+number+"?text="+encodeURIComponent(message),"_blank");
 }
 
+/* إنشاء رابط مؤقت لصورة التوقيع المخزنة في المساحة الخاصة */
+async function getSignatureImageUrl(signaturePath){
+ if(!signaturePath)return null;
+ try{
+  const {data,error}=await db.storage.from(BUCKET).createSignedUrl(signaturePath,900);
+  if(error){
+   console.warn("تعذر إنشاء رابط التوقيع:",error.message);
+   return null;
+  }
+  return data?.signedUrl||null;
+ }catch(error){
+  console.warn("تعذر الوصول إلى صورة التوقيع:",error);
+  return null;
+ }
+}
+
 async function showReport(circularId){
  const {data:c,error}=await db.from("notif_circulars").select("*").eq("id",circularId).single();
  if(error){alert(error.message);return}
- const recipients=await getCircularRecipients(circularId);
+
+ let recipients;
+ try{
+  recipients=await getCircularRecipients(circularId);
+ }catch(error){
+  alert("تعذر تحميل إقرارات الموظفين: "+error.message);
+  return;
+ }
+
  const employeeIds=recipients.map(r=>r.employee_id);
- const {data:emps}=await db.from("notif_employees").select("id,full_name,job_title").in("id",employeeIds);
- const empMap=Object.fromEntries((emps||[]).map(e=>[e.id,e]));
+ let emps=[];
+ if(employeeIds.length){
+  const {data,error:empError}=await db.from("notif_employees")
+   .select("id,full_name,job_title").in("id",employeeIds);
+  if(empError){alert("تعذر تحميل أسماء الموظفين: "+empError.message);return}
+  emps=data||[];
+ }
+ const empMap=Object.fromEntries(emps.map(e=>[e.id,e]));
  const signed=recipients.filter(r=>r.receipt?.acknowledged).length;
+
  let rows="";
  for(const r of recipients){
   const emp=empMap[r.employee_id]||{};
-  rows+=`<tr><td>${escapeHTML(emp.full_name||"—")}</td><td>${escapeHTML(emp.job_title||"—")}</td><td>${r.receipt?.acknowledged?"تم الإقرار":"لم يتم الإقرار"}</td><td>${r.receipt?.signed_at?formatDateTime(r.receipt.signed_at):"—"}</td></tr>`;
+  let signatureCell="—";
+
+  if(r.receipt?.acknowledged && r.receipt?.signature_path){
+   const imageUrl=await getSignatureImageUrl(r.receipt.signature_path);
+   if(imageUrl){
+    signatureCell=`<img class="report-signature" src="${escapeHTML(imageUrl)}" alt="توقيع ${escapeHTML(emp.full_name||"الموظف")}">`;
+   }else{
+    signatureCell='<span class="small">تعذر عرض صورة التوقيع</span>';
+   }
+  }else if(r.receipt?.acknowledged){
+   signatureCell='<span class="small">لا توجد صورة محفوظة</span>';
+  }
+
+  rows+=`<tr>
+   <td>${escapeHTML(emp.full_name||"—")}</td>
+   <td>${escapeHTML(emp.job_title||"—")}</td>
+   <td>${r.receipt?.acknowledged?"تم الإقرار":"لم يتم الإقرار"}</td>
+   <td>${r.receipt?.signed_at?formatDateTime(r.receipt.signed_at):"—"}</td>
+   <td>${signatureCell}</td>
+  </tr>`;
  }
+
  $("reportContent").innerHTML=`
   <h2 style="text-align:center">تقرير متابعة تبليغ تعميم</h2>
   <p style="text-align:center">وزارة التعليم - الإدارة العامة للتعليم بمنطقة الجوف<br>مدرسة عبدالله بن مسعود الابتدائية</p>
@@ -507,13 +555,32 @@ async function showReport(circularId){
   <p><strong>إجمالي المستلمين:</strong> ${recipients.length}</p>
   <p><strong>عدد الإقرارات:</strong> ${signed}</p>
   <p><strong>عدد من لم يقروا:</strong> ${recipients.length-signed}</p>
-  <div class="tablewrap"><table><thead><tr><th>اسم الموظف</th><th>المسمى الوظيفي</th><th>حالة الإقرار</th><th>تاريخ الإقرار</th></tr></thead><tbody>${rows}</tbody></table></div>
-  <p style="margin-top:30px">معد التقرير: مساعد إداري</p>
-  <p>التوقيع: ................................................</p>
-  <p style="margin-top:30px">اعتماد مدير المدرسة بعد التوقيع على النسخة النهائية:</p>
-  <p>الاسم: ................................................</p>
-  <p>التوقيع: ................................................</p>
-  <p>التاريخ: ................................................</p>`;
+
+  <div class="tablewrap">
+   <table>
+    <thead>
+     <tr>
+      <th>اسم الموظف</th>
+      <th>المسمى الوظيفي</th>
+      <th>حالة الإقرار</th>
+      <th>تاريخ الإقرار</th>
+      <th>التوقيع الإلكتروني</th>
+     </tr>
+    </thead>
+    <tbody>${rows}</tbody>
+   </table>
+  </div>
+
+  <div style="margin-top:35px;page-break-inside:avoid">
+   <p><strong>معد التقرير:</strong> مساعد إداري</p>
+   <p>التوقيع: ................................................</p>
+
+   <p style="margin-top:30px"><strong>اعتماد مدير المدرسة بعد التوقيع على النسخة النهائية:</strong></p>
+   <p>الاسم: ................................................</p>
+   <p>التوقيع: ................................................</p>
+   <p>التاريخ: ................................................</p>
+  </div>`;
+
  show("reportSection");
  $("reportSection").scrollIntoView({behavior:"smooth"});
 }
