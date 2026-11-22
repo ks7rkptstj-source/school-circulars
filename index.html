@@ -113,7 +113,6 @@ details.employee-admin .details-body{padding:0 18px 18px}
  header h2{font-size:17px}
  .pdfbox{height:420px}
  table{font-size:12px}
- /* إبقاء الاعتمادين بجانب بعض */
  .report-approvals{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
  .approval-box{padding:6px 3px;min-width:0}
  .approval-box h4{font-size:11px}
@@ -488,33 +487,49 @@ function show(id){$(id).classList.remove("hidden")}
 function hide(id){$(id).classList.add("hidden")}
 function msg(id,text,error=false){$(id).innerHTML='<div class="msg '+(error?'error':'')+'">'+escapeHTML(text)+'</div>'}
 function escapeHTML(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function formatDate(v){return v?new Date(v).toLocaleDateString("ar-SA"):"—"}
-function formatDateTime(v){return v?new Date(v).toLocaleString("ar-SA"):"—"}
 
-function formatReportDate(v){
- if(!v)return"—";
- let p=String(v).slice(0,10).split("-");
- if(p.length!==3)return"—";
- let d=new Date(+p[0],+p[1]-1,+p[2]);
- try{
-  return new Intl.DateTimeFormat("en-GB-u-ca-islamic-umalqura-nu-latn",{day:"2-digit",month:"2-digit",year:"numeric"}).format(d).replace(/\s*AH\.?/gi,"").trim()
- }catch(e){
-  return new Intl.DateTimeFormat("en-GB",{day:"2-digit",month:"2-digit",year:"numeric"}).format(d)
- }
-}
-
-function formatReportDateTime(v){
+/* تنسيق التاريخ بالأرقام بدل اسم الشهر */
+function numericHijriDate(v){
  if(!v)return"—";
  let d=new Date(v);
  if(isNaN(d))return"—";
- let dp;
  try{
-  dp=new Intl.DateTimeFormat("en-GB-u-ca-islamic-umalqura-nu-latn",{day:"2-digit",month:"2-digit",year:"numeric"}).format(d)
+  return new Intl.DateTimeFormat("en-GB-u-ca-islamic-umalqura-nu-latn",{
+   day:"2-digit",
+   month:"2-digit",
+   year:"numeric"
+  }).format(d).replace(/\s*AH\.?/gi,"").trim()
  }catch(e){
-  dp=new Intl.DateTimeFormat("en-GB",{day:"2-digit",month:"2-digit",year:"numeric"}).format(d)
+  return new Intl.DateTimeFormat("en-GB",{
+   day:"2-digit",
+   month:"2-digit",
+   year:"numeric"
+  }).format(d)
  }
- dp=dp.replace(/\s*AH\.?/gi,"").trim();
- return dp+" - "+new Intl.DateTimeFormat("ar-SA",{hour:"2-digit",minute:"2-digit"}).format(d)
+}
+
+function formatDate(v){
+ return numericHijriDate(v)
+}
+
+function formatDateTime(v){
+ if(!v)return"—";
+ let d=new Date(v);
+ if(isNaN(d))return"—";
+ let date=numericHijriDate(d);
+ let time=new Intl.DateTimeFormat("ar-SA",{
+  hour:"2-digit",
+  minute:"2-digit"
+ }).format(d);
+ return date+" - "+time
+}
+
+function formatReportDate(v){
+ return numericHijriDate(v)
+}
+
+function formatReportDateTime(v){
+ return formatDateTime(v)
 }
 
 function setInitialDate(){if($("circularDate"))$("circularDate").value=new Date().toISOString().slice(0,10)}
@@ -967,7 +982,6 @@ async function showReport(circularId,scroll=true){
 
  let prep=await getApprovalData("preparer"),principal=await getApprovalData("principal");
 
- /* الاعتمادات بالصيغة المطلوبة، والتوقيع بجانب الاسم */
  let approvals=`
  <div class="report-approvals">
   <div class="approval-box">
