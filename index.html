@@ -195,14 +195,14 @@ footer{
  border-radius:8px
 }
 
-/* تنسيق خانتي التوقيع */
+/* خانات معد التقرير واعتماد المدير */
 .report-approvals{
  display:grid;
  grid-template-columns:1fr 1fr;
- gap:15px;
- margin-top:18px;
- padding-top:12px;
- border-top:2px solid #c6a45b;
+ gap:12px;
+ margin-top:15px;
+ padding-top:10px;
+ border-top:2px solid var(--gold);
  break-inside:avoid;
  page-break-inside:avoid
 }
@@ -210,25 +210,71 @@ footer{
 .approval-box{
  border:1px solid #dce5dd;
  border-radius:8px;
- padding:12px;
- min-height:105px;
+ padding:10px;
+ min-height:90px;
  background:#fff;
  break-inside:avoid;
  page-break-inside:avoid
 }
 
 .approval-box h4{
- margin:0 0 8px;
+ margin:0 0 6px;
  color:#176b45;
- font-size:14px
+ font-size:13px
 }
 
-.approval-box p{margin:4px 0;font-size:13px}
+.approval-box p{margin:3px 0;font-size:12px}
 
 .signature-space{
- height:35px;
+ height:25px;
  border-bottom:1px dotted #777;
- margin-top:8px
+ margin-top:5px
+}
+
+/* صفحات التقرير */
+.report-page{
+ width:100%;
+}
+
+.report-page-heading{
+ text-align:center;
+ margin-bottom:5px
+}
+
+.report-page-heading h2{
+ color:#155c3c;
+ margin:0 0 4px;
+ font-size:17px
+}
+
+.report-page-heading p{
+ margin:2px 0;
+ font-size:10px
+}
+
+.report-summary{
+ display:flex;
+ flex-wrap:wrap;
+ gap:5px 16px;
+ align-items:center;
+ margin:5px 0;
+ padding:5px 8px;
+ background:#f4f7f4;
+ border:1px solid #dce5dd;
+ border-radius:5px
+}
+
+.report-summary span{
+ font-size:10px
+}
+
+.report-page-subheading{
+ text-align:center;
+ font-size:11px;
+ color:#176b45;
+ margin:0 0 5px;
+ padding-bottom:4px;
+ border-bottom:1px solid #ddd
 }
 
 @media(max-width:600px){
@@ -242,32 +288,28 @@ footer{
 
 /* إعدادات الطباعة */
 @page{
- size:A4 portrait;
- margin:8mm
+ size:A4 landscape;
+ margin:7mm;
 }
 
 @media print{
 
  html,body{
-  background:white!important;
+  background:#fff!important;
   margin:0!important;
   padding:0!important;
   width:100%!important;
   font-family:Tahoma,Arial,sans-serif!important;
-  color:#111!important
+  color:#111!important;
  }
 
- /*
-   إخفاء جميع أجزاء المنصة،
-   ثم إظهار تقرير التعميم المحدد فقط.
- */
  body *{
-  visibility:hidden!important
+  visibility:hidden!important;
  }
 
  #reportSection,
  #reportSection *{
-  visibility:visible!important
+  visibility:visible!important;
  }
 
  #reportSection{
@@ -283,124 +325,176 @@ footer{
   border:0!important;
   border-radius:0!important;
   box-shadow:none!important;
-  background:white!important;
-  color:#111!important
+  background:#fff!important;
+  color:#111!important;
  }
 
- #reportSection .no-print{
-  display:none!important
+ #reportSection .no-print,
+ #reportSection button{
+  display:none!important;
  }
 
  #reportContent{
   display:block!important;
   width:100%!important;
+  margin:0!important;
+  padding:0!important;
   font-size:9px!important;
-  line-height:1.35!important;
-  color:#111!important
+  line-height:1.2!important;
+  color:#111!important;
+ }
+
+ /* كل مجموعة موظفين في صفحة مستقلة */
+ #reportContent .report-page{
+  display:block!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  break-inside:avoid!important;
+  page-break-inside:avoid!important;
+ }
+
+ #reportContent .report-page:first-child{
+  break-after:page!important;
+  page-break-after:always!important;
+ }
+
+ #reportContent .report-page:last-child{
+  break-after:auto!important;
+  page-break-after:auto!important;
  }
 
  #reportContent h2{
   font-size:15px!important;
-  margin:3px 0 5px!important;
-  text-align:center!important
+  margin:0 0 3px!important;
+  text-align:center!important;
+ }
+
+ #reportContent h3{
+  font-size:11px!important;
+  margin:3px 0!important;
+  padding:0!important;
  }
 
  #reportContent p{
-  margin:3px 0!important;
-  line-height:1.4!important
+  margin:2px 0!important;
+  line-height:1.25!important;
+  font-size:9px!important;
  }
 
  #reportContent hr{
-  border:0;
-  border-top:1px solid #999;
-  margin:5px 0!important
+  border:0!important;
+  border-top:1px solid #999!important;
+  margin:4px 0!important;
  }
 
  #reportContent .tablewrap{
   overflow:visible!important;
-  width:100%!important
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
  }
 
  #reportContent table{
   width:100%!important;
   table-layout:fixed!important;
   border-collapse:collapse!important;
-  margin-top:7px!important;
-  font-size:8px!important
+  margin:4px 0 0!important;
+  font-size:8.5px!important;
  }
 
  #reportContent th,
  #reportContent td{
-  border:1px solid #777!important;
-  padding:3px 2px!important;
+  border:1px solid #888!important;
+  padding:2px 3px!important;
   text-align:center!important;
   vertical-align:middle!important;
-  overflow-wrap:anywhere!important
+  line-height:1.15!important;
+  overflow-wrap:anywhere!important;
  }
 
  #reportContent th{
   background:#eaf2ec!important;
   color:#155c3c!important;
-  -webkit-print-color-adjust:exact;
-  print-color-adjust:exact
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
  }
 
  #reportContent thead{
-  display:table-header-group!important
+  display:table-header-group!important;
  }
 
  #reportContent tr{
   break-inside:avoid!important;
-  page-break-inside:avoid!important
+  page-break-inside:avoid!important;
  }
 
- .report-signature{
-  max-width:85px!important;
-  max-height:42px!important;
+ #reportContent .report-signature{
+  display:block!important;
+  max-width:48px!important;
+  max-height:19px!important;
   width:auto!important;
   height:auto!important;
-  object-fit:contain!important
+  object-fit:contain!important;
+  margin:auto!important;
  }
 
- .report-approvals{
+ #reportContent .report-summary{
+  gap:3px 12px!important;
+  margin:3px 0!important;
+  padding:3px 6px!important;
+ }
+
+ #reportContent .report-summary span{
+  font-size:9px!important;
+ }
+
+ #reportContent .report-page-subheading{
+  font-size:10px!important;
+  margin:0 0 3px!important;
+  padding-bottom:3px!important;
+ }
+
+ #reportContent .report-approvals{
   display:grid!important;
   grid-template-columns:1fr 1fr!important;
-  gap:10px!important;
-  margin-top:12px!important;
-  padding-top:8px!important;
+  gap:7px!important;
+  margin-top:7px!important;
+  padding-top:5px!important;
   border-top:1px solid #999!important;
   break-inside:avoid!important;
-  page-break-inside:avoid!important
+  page-break-inside:avoid!important;
  }
 
- .approval-box{
+ #reportContent .approval-box{
   border:1px solid #999!important;
-  padding:7px!important;
-  min-height:85px!important;
-  background:white!important;
+  border-radius:3px!important;
+  padding:4px 7px!important;
+  min-height:58px!important;
+  background:#fff!important;
   break-inside:avoid!important;
-  page-break-inside:avoid!important
+  page-break-inside:avoid!important;
  }
 
- .approval-box h4{
-  font-size:10px!important;
-  margin:0 0 5px!important;
-  color:#155c3c!important
- }
-
- .approval-box p{
+ #reportContent .approval-box h4{
   font-size:9px!important;
-  margin:3px 0!important
+  margin:0 0 2px!important;
+  color:#155c3c!important;
  }
 
- .signature-space{
-  height:25px!important;
-  margin-top:5px!important
+ #reportContent .approval-box p{
+  font-size:8.5px!important;
+  margin:2px 0!important;
  }
 
- footer,header{display:none!important}
+ #reportContent .signature-space{
+  height:14px!important;
+  margin-top:2px!important;
+ }
 
- button{display:none!important}
+ header,footer,button{
+  display:none!important;
+ }
 
 }
 </style>
@@ -595,7 +689,7 @@ footer{
  <div id="reportSection" class="card hidden">
   <div class="row no-print" style="justify-content:space-between">
    <h3>تقرير إقرارات الموظفين</h3>
-   <button onclick="window.print()">طباعة التقرير / حفظ PDF</button>
+   <button onclick="printReport()">طباعة التقرير / حفظ PDF</button>
   </div>
 
   <div id="reportContent"></div>
@@ -634,7 +728,7 @@ function hide(id){
 }
 
 function msg(id,text,error=false){
- $(""+id).innerHTML='<div class="msg '+(error?'error':'')+'">'+escapeHTML(text)+'</div>';
+ $(id).innerHTML='<div class="msg '+(error?'error':'')+'">'+escapeHTML(text)+'</div>';
 }
 
 function escapeHTML(value){
@@ -655,6 +749,75 @@ function formatDate(v){
 function formatDateTime(v){
  if(!v)return "—";
  return new Date(v).toLocaleString("ar-SA");
+}
+
+/* تاريخ التقرير بالأرقام وبالتقويم الهجري */
+function formatReportDate(v){
+ if(!v)return "—";
+
+ const parts=String(v).slice(0,10).split("-");
+
+ if(parts.length!==3)return "—";
+
+ const date=new Date(
+  Number(parts[0]),
+  Number(parts[1])-1,
+  Number(parts[2])
+ );
+
+ try{
+  return new Intl.DateTimeFormat(
+   "en-GB-u-ca-islamic-umalqura-nu-latn",
+   {
+    day:"2-digit",
+    month:"2-digit",
+    year:"numeric"
+   }
+  ).format(date);
+ }catch(e){
+  return new Intl.DateTimeFormat("en-GB",{
+   day:"2-digit",
+   month:"2-digit",
+   year:"numeric"
+  }).format(date);
+ }
+}
+
+function formatReportDateTime(v){
+ if(!v)return "—";
+
+ const date=new Date(v);
+
+ if(isNaN(date.getTime()))return "—";
+
+ let datePart;
+
+ try{
+  datePart=new Intl.DateTimeFormat(
+   "en-GB-u-ca-islamic-umalqura-nu-latn",
+   {
+    day:"2-digit",
+    month:"2-digit",
+    year:"numeric"
+   }
+  ).format(date);
+ }catch(e){
+  datePart=new Intl.DateTimeFormat("en-GB",{
+   day:"2-digit",
+   month:"2-digit",
+   year:"numeric"
+  }).format(date);
+ }
+
+ const timePart=new Intl.DateTimeFormat(
+  "ar-SA",
+  {
+   hour:"2-digit",
+   minute:"2-digit"
+  }
+ ).format(date);
+
+ return datePart+" - "+timePart;
 }
 
 function setInitialDate(){
@@ -1311,7 +1474,7 @@ async function getSignatureImageUrl(signaturePath){
  }
 }
 
-/* إنشاء تقرير التعميم المحدد */
+/* إنشاء التقرير وتقسيم الموظفين إلى صفحتين */
 async function showReport(circularId){
 
  const {data:c,error}=await db.from("notif_circulars")
@@ -1358,7 +1521,7 @@ async function showReport(circularId){
   r=>r.receipt?.acknowledged
  ).length;
 
- let rows="";
+ let rows=[];
 
  for(const r of recipients){
 
@@ -1378,150 +1541,194 @@ async function showReport(circularId){
      <img
       class="report-signature"
       src="${escapeHTML(imageUrl)}"
-      alt="توقيع ${escapeHTML(emp.full_name||"الموظف")}"
+      alt="توقيع الموظف"
      >
     `;
 
    }else{
 
-    signatureCell='<span class="small">تعذر عرض صورة التوقيع</span>';
+    signatureCell='<span>تعذر عرض التوقيع</span>';
    }
 
   }else if(r.receipt?.acknowledged){
 
-   signatureCell='<span class="small">لا توجد صورة محفوظة</span>';
+   signatureCell='<span>لا توجد صورة</span>';
   }
 
-  rows+=`<tr>
-
-   <td>${escapeHTML(emp.full_name||"—")}</td>
-
-   <td>${escapeHTML(emp.job_title||"—")}</td>
-
-   <td>
-    ${r.receipt?.acknowledged
-     ?"تم الإقرار"
-     :"لم يتم الإقرار"}
-   </td>
-
-   <td>
-    ${r.receipt?.signed_at
-     ?formatDateTime(r.receipt.signed_at)
-     :"—"}
-   </td>
-
-   <td>${signatureCell}</td>
-
-  </tr>`;
+  rows.push(`
+   <tr>
+    <td>${escapeHTML(emp.full_name||"—")}</td>
+    <td>${escapeHTML(emp.job_title||"—")}</td>
+    <td>
+     ${r.receipt?.acknowledged
+      ?"تم الإقرار"
+      :"لم يتم الإقرار"}
+    </td>
+    <td>
+     ${r.receipt?.signed_at
+      ?formatReportDateTime(r.receipt.signed_at)
+      :"—"}
+    </td>
+    <td>${signatureCell}</td>
+   </tr>
+  `);
  }
 
- $("reportContent").innerHTML=`
+ /* تقسيم 44 موظفًا: 22 في كل صفحة */
+ const firstRows=rows.slice(0,22);
+ const secondRows=rows.slice(22);
 
-  <h2 style="text-align:center">
-   تقرير متابعة تبليغ تعميم
-  </h2>
-
-  <p style="text-align:center">
-   وزارة التعليم - الإدارة العامة للتعليم بمنطقة الجوف
-   <br>
-   مدرسة عبدالله بن مسعود الابتدائية
-  </p>
-
-  <hr>
-
-  <p>
-   <strong>رقم التعميم:</strong>
-   ${escapeHTML(c.circular_number)}
-  </p>
-
-  <p>
-   <strong>التاريخ:</strong>
-   ${formatDate(c.circular_date)}
-  </p>
-
-  <p>
-   <strong>الموضوع:</strong>
-   ${escapeHTML(c.subject)}
-  </p>
-
-  <p>
-   <strong>الجهة المصدرة:</strong>
-   ${escapeHTML(c.issuing_authority||"—")}
-  </p>
-
-  <p>
-   <strong>إجمالي المستلمين:</strong>
-   ${recipients.length}
-  </p>
-
-  <p>
-   <strong>عدد الإقرارات:</strong>
-   ${signed}
-  </p>
-
-  <p>
-   <strong>عدد من لم يقروا:</strong>
-   ${recipients.length-signed}
-  </p>
-
+ const tableHeader=`
   <div class="tablewrap">
-
    <table>
-
     <thead>
      <tr>
-      <th>اسم الموظف</th>
-      <th>المسمى الوظيفي</th>
-      <th>حالة الإقرار</th>
-      <th>تاريخ الإقرار</th>
-      <th>التوقيع الإلكتروني</th>
+      <th style="width:22%">اسم الموظف</th>
+      <th style="width:18%">المسمى الوظيفي</th>
+      <th style="width:15%">حالة الإقرار</th>
+      <th style="width:25%">تاريخ الإقرار</th>
+      <th style="width:20%">التوقيع الإلكتروني</th>
      </tr>
     </thead>
-
     <tbody>
-     ${rows}
+ `;
+
+ const tableEnd=`
     </tbody>
-
    </table>
-
   </div>
+ `;
 
+ const approvals=`
   <div class="report-approvals">
 
    <div class="approval-box">
-
     <h4>معد التقرير</h4>
-
     <p>مساعد إداري</p>
-
     <p><strong>خالد شاقي الرويلي</strong></p>
-
     <p>التوقيع:</p>
-
     <div class="signature-space"></div>
-
    </div>
 
    <div class="approval-box">
-
     <h4>اعتماد مدير المدرسة</h4>
-
     <p><strong>عويد عشبان الرويلي</strong></p>
-
     <p>التوقيع:</p>
-
     <div class="signature-space"></div>
-
    </div>
 
   </div>
  `;
+
+ const reportHeading=`
+  <div class="report-page-heading">
+   <h2>تقرير متابعة تبليغ تعميم</h2>
+
+   <p>
+    وزارة التعليم - الإدارة العامة للتعليم بمنطقة الجوف
+    <br>
+    مدرسة عبدالله بن مسعود الابتدائية
+   </p>
+  </div>
+
+  <hr>
+
+  <div class="report-summary">
+   <span><strong>رقم التعميم:</strong> ${escapeHTML(c.circular_number)}</span>
+   <span><strong>التاريخ:</strong> ${formatReportDate(c.circular_date)}</span>
+   <span><strong>الموضوع:</strong> ${escapeHTML(c.subject)}</span>
+   <span><strong>الجهة المصدرة:</strong> ${escapeHTML(c.issuing_authority||"—")}</span>
+   <span><strong>إجمالي المستلمين:</strong> ${recipients.length}</span>
+   <span><strong>الإقرارات:</strong> ${signed}</span>
+   <span><strong>لم يقروا:</strong> ${recipients.length-signed}</span>
+  </div>
+ `;
+
+ let firstPage=`
+  <div class="report-page">
+   ${reportHeading}
+   ${tableHeader}
+   ${firstRows.join("")}
+   ${tableEnd}
+  </div>
+ `;
+
+ let secondPage="";
+
+ if(secondRows.length){
+
+  secondPage=`
+   <div class="report-page">
+
+    <div class="report-page-subheading">
+     استكمال تقرير متابعة تبليغ التعميم
+     | رقم التعميم: ${escapeHTML(c.circular_number)}
+     | ${escapeHTML(c.subject)}
+    </div>
+
+    ${tableHeader}
+    ${secondRows.join("")}
+    ${tableEnd}
+
+    ${approvals}
+
+   </div>
+  `;
+
+ }else{
+
+  firstPage=`
+   <div class="report-page">
+    ${reportHeading}
+    ${tableHeader}
+    ${firstRows.join("")}
+    ${tableEnd}
+    ${approvals}
+   </div>
+  `;
+ }
+
+ $("reportContent").innerHTML=firstPage+secondPage;
 
  show("reportSection");
 
  $("reportSection").scrollIntoView({
   behavior:"smooth"
  });
+}
+
+/* انتظار تحميل صور التوقيعات قبل الطباعة */
+async function printReport(){
+
+ if(!$("reportContent").innerHTML.trim()){
+  alert("يرجى عرض تقرير التعميم أولاً");
+  return;
+ }
+
+ const images=Array.from(
+  $("reportContent").querySelectorAll("img")
+ );
+
+ await Promise.all(images.map(img=>{
+
+  if(img.complete&&img.naturalWidth>0){
+   return Promise.resolve();
+  }
+
+  return new Promise(resolve=>{
+
+   const done=()=>resolve();
+
+   img.addEventListener("load",done,{once:true});
+   img.addEventListener("error",done,{once:true});
+
+   setTimeout(done,5000);
+
+  });
+
+ }));
+
+ window.print();
 }
 
 function renderEmployeeAdmin(){
