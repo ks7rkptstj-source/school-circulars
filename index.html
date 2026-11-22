@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -7,765 +6,158 @@
 <title>منصة تبليغات التعاميم - مدرسة عبدالله بن مسعود</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{
- --green:#176b45;--green2:#21865a;--gold:#c6a45b;
- --bg:#f3f6f3;--ink:#24352c;--red:#b42318
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);font-family:Tahoma,Arial,sans-serif;color:var(--ink);line-height:1.7}
+:root{--green:#176b45;--green2:#21865a;--gold:#c6a45b;--bg:#f3f6f3;--ink:#24352c;--red:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Tahoma,Arial,sans-serif;color:var(--ink);line-height:1.7}
 header{background:linear-gradient(120deg,#145b3b,#21865a);color:white;text-align:center;padding:22px 12px;border-bottom:5px solid var(--gold)}
-header h2{margin:3px;font-size:19px}
-header p{margin:2px;font-size:14px}
-.container{max-width:1100px;margin:20px auto;padding:0 12px}
-.card{background:white;border-radius:13px;padding:18px;margin-bottom:16px;box-shadow:0 3px 12px #0000000c;border:1px solid #e5ebe6}
+header h2{margin:3px;font-size:19px}header p{margin:2px;font-size:14px}
+.container{max-width:1100px;margin:20px auto;padding:0 12px}.card{background:white;border-radius:13px;padding:18px;margin-bottom:16px;box-shadow:0 3px 12px #0000000c;border:1px solid #e5ebe6}
 h3{color:var(--green);margin:0 0 14px;border-bottom:1px solid #e7eee8;padding-bottom:9px}
-label{display:block;font-weight:bold;margin:9px 0 4px}
-input,textarea,select{width:100%;padding:11px;border:1px solid #ccd8cf;border-radius:8px;font:inherit;background:white}
-textarea{min-height:85px;resize:vertical}
-button,.btn{border:0;border-radius:8px;padding:10px 15px;background:var(--green);color:white;font:inherit;cursor:pointer;margin:4px 2px}
-button.secondary{background:#64756a}
-button.gold{background:#a77d2c}
-button.danger{background:#b42318}
-button.light{background:#eaf2ec;color:var(--green);border:1px solid #cbdccf}
-button:disabled{opacity:.5;cursor:not-allowed}
-.row{display:flex;gap:12px;flex-wrap:wrap}
-.col{flex:1;min-width:220px}
-.hidden{display:none!important}
-.msg{padding:10px;border-radius:8px;margin:10px 0;background:#edf5ee;color:#176b45}
-.msg.error{background:#fff0ef;color:#a51e18}
-.small{font-size:13px;color:#637168}
-.employee{border:1px solid #e2e9e3;padding:10px;border-radius:8px;margin:7px 0;display:flex;gap:8px;align-items:center}
-.employee input{width:auto}
+label{display:block;font-weight:bold;margin:9px 0 4px}input,textarea,select{width:100%;padding:11px;border:1px solid #ccd8cf;border-radius:8px;font:inherit;background:white}
+textarea{min-height:85px;resize:vertical}button{border:0;border-radius:8px;padding:10px 15px;background:var(--green);color:white;font:inherit;cursor:pointer;margin:4px 2px}
+button.secondary{background:#64756a}button.gold{background:#a77d2c}button.danger{background:#b42318}button.light{background:#eaf2ec;color:var(--green);border:1px solid #cbdccf}
+button:disabled{opacity:.5;cursor:not-allowed}.row{display:flex;gap:12px;flex-wrap:wrap}.col{flex:1;min-width:220px}.hidden{display:none!important}
+.msg{padding:10px;border-radius:8px;margin:10px 0;background:#edf5ee;color:#176b45}.msg.error{background:#fff0ef;color:#a51e18}
+.small{font-size:13px;color:#637168}.employee{border:1px solid #e2e9e3;padding:10px;border-radius:8px;margin:7px 0;display:flex;gap:8px;align-items:center}.employee input{width:auto}
 .pill{display:inline-block;padding:3px 9px;border-radius:20px;background:#edf4ee;color:#176b45;font-size:12px}
-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
-th,td{border:1px solid #dce5dd;padding:8px;text-align:right;vertical-align:middle}
-th{background:#eaf2ec;color:#155c3c}
-.tablewrap{overflow-x:auto}
-.signature{border:2px dashed #9eafa2;border-radius:9px;background:#fff;width:100%;height:210px;touch-action:none}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}th,td{border:1px solid #dce5dd;padding:8px;text-align:right;vertical-align:middle}th{background:#eaf2ec;color:#155c3c}
+.tablewrap{overflow-x:auto}.signature{border:2px dashed #9eafa2;border-radius:9px;background:#fff;width:100%;height:210px;touch-action:none}
 .report-signature{display:block;max-width:120px;max-height:65px;width:auto;height:auto;object-fit:contain;margin:auto}
-footer{text-align:center;color:#66766b;padding:18px;font-size:13px}
-.actions{display:flex;gap:5px;flex-wrap:wrap}
-.circular{border:1px solid #dce6dd;padding:13px;border-radius:10px;margin:10px 0;background:#fff}
-.circular h4{margin:0;color:#176b45}
-.pdfbox{width:100%;height:520px;border:1px solid #ccd8cf;border-radius:8px}
-.signature-tools{display:flex;gap:5px;flex-wrap:wrap;margin:6px 0}
-.signature-tools button{font-size:13px}
+footer{text-align:center;color:#66766b;padding:18px;font-size:13px}.actions,.signature-tools{display:flex;gap:5px;flex-wrap:wrap;margin:6px 0}
+.circular{border:1px solid #dce6dd;padding:13px;border-radius:10px;margin:10px 0;background:#fff}.circular h4{margin:0;color:#176b45}
+.pdfbox{width:100%;height:520px;border:1px solid #ccd8cf;border-radius:8px}.signature-tools button{font-size:13px}
 .report-approvals{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:15px;padding-top:10px;border-top:2px solid var(--gold);break-inside:avoid;page-break-inside:avoid}
 .approval-box{border:1px solid #dce5dd;border-radius:8px;padding:10px;min-height:90px;background:#fff;break-inside:avoid;page-break-inside:avoid}
-.approval-box h4{margin:0 0 6px;color:#176b45;font-size:13px}
-.approval-box p{margin:3px 0;font-size:12px}
+.approval-box h4{margin:0 0 6px;color:#176b45;font-size:13px}.approval-box p{margin:3px 0;font-size:12px}
 .approval-sign{max-width:130px;max-height:45px;object-fit:contain;display:block;margin:5px auto}
-.approval-editor{border:1px solid #dce5dd;border-radius:9px;padding:12px;margin:12px 0;background:#f9fbf9}
-.approval-editor canvas{height:110px}
-.report-page{width:100%}
-.report-page-heading{text-align:center;margin-bottom:5px}
-.report-page-heading h2{color:#155c3c;margin:0 0 4px;font-size:17px}
-.report-page-heading p{margin:2px 0;font-size:10px}
-.report-summary{display:flex;flex-wrap:wrap;gap:5px 16px;align-items:center;margin:5px 0;padding:5px 8px;background:#f4f7f4;border:1px solid #dce5dd;border-radius:5px}
-.report-summary span{font-size:10px}
-.report-page-subheading{text-align:center;font-size:11px;color:#176b45;margin:0 0 5px;padding-bottom:4px;border-bottom:1px solid #ddd}
-@media(max-width:600px){
- .container{margin:10px auto}.card{padding:13px}
- header h2{font-size:17px}.pdfbox{height:420px}
- table{font-size:12px}.report-approvals{grid-template-columns:1fr}
-}
+.approval-editor{border:1px solid #dce5dd;border-radius:9px;padding:12px;margin:12px 0;background:#f9fbf9}.approval-editor canvas{height:110px}
+.report-page{width:100%}.report-page-heading{text-align:center;margin-bottom:5px}.report-page-heading h2{color:#155c3c;margin:0 0 4px;font-size:17px}
+.report-page-heading p{margin:2px 0;font-size:10px}.report-summary{display:flex;flex-wrap:wrap;gap:5px 16px;align-items:center;margin:5px 0;padding:5px 8px;background:#f4f7f4;border:1px solid #dce5dd;border-radius:5px}
+.report-summary span{font-size:10px}.report-page-subheading{text-align:center;font-size:11px;color:#176b45;margin:0 0 5px;padding-bottom:4px;border-bottom:1px solid #ddd}
+details.employee-admin{padding:0;overflow:hidden}details.employee-admin>summary{cursor:pointer;list-style:none;padding:16px 18px;color:var(--green);font-weight:bold;font-size:17px}
+details.employee-admin>summary::-webkit-details-marker{display:none}details.employee-admin>summary:after{content:"＋";float:left;color:var(--gold)}
+details.employee-admin[open]>summary:after{content:"－"}details.employee-admin .details-body{padding:0 18px 18px}
+@media(max-width:600px){.container{margin:10px auto}.card{padding:13px}header h2{font-size:17px}.pdfbox{height:420px}table{font-size:12px}.report-approvals{grid-template-columns:1fr}}
 @page{size:A4 landscape;margin:7mm}
 @media print{
  html,body{background:#fff!important;margin:0!important;padding:0!important;width:100%!important;font-family:Tahoma,Arial,sans-serif!important;color:#111!important}
- body *{visibility:hidden!important}
- #reportSection,#reportSection *{visibility:visible!important}
+ body *{visibility:hidden!important}#reportSection,#reportSection *{visibility:visible!important}
  #reportSection{display:block!important;position:absolute!important;top:0!important;right:0!important;left:0!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#fff!important;color:#111!important}
- #reportSection .no-print,#reportSection button{display:none!important}
- #reportContent{display:block!important;width:100%!important;margin:0!important;padding:0!important;font-size:9px!important;line-height:1.2!important;color:#111!important}
+ #reportSection .no-print,#reportSection button{display:none!important}#reportContent{display:block!important;width:100%!important;margin:0!important;padding:0!important;font-size:9px!important;line-height:1.2!important;color:#111!important}
  #reportContent .report-page{display:block!important;width:100%!important;margin:0!important;padding:0!important;break-inside:avoid!important;page-break-inside:avoid!important}
- #reportContent.has-second-page .report-page:first-child{break-after:page!important;page-break-after:always!important}
- #reportContent .report-page:last-child{break-after:auto!important;page-break-after:auto!important}
- #reportContent h2{font-size:15px!important;margin:0 0 3px!important;text-align:center!important}
- #reportContent h3{font-size:11px!important;margin:3px 0!important;padding:0!important}
- #reportContent p{margin:2px 0!important;line-height:1.25!important;font-size:9px!important}
- #reportContent hr{border:0!important;border-top:1px solid #999!important;margin:4px 0!important}
- #reportContent .tablewrap{overflow:visible!important;width:100%!important;margin:0!important;padding:0!important}
+ #reportContent.has-second-page .report-page:first-child{break-after:page!important;page-break-after:always!important}#reportContent .report-page:last-child{break-after:auto!important;page-break-after:auto!important}
+ #reportContent h2{font-size:15px!important;margin:0 0 3px!important;text-align:center!important}#reportContent p{margin:2px 0!important;line-height:1.25!important;font-size:9px!important}
+ #reportContent hr{border:0!important;border-top:1px solid #999!important;margin:4px 0!important}#reportContent .tablewrap{overflow:visible!important;width:100%!important;margin:0!important;padding:0!important}
  #reportContent table{width:100%!important;table-layout:fixed!important;border-collapse:collapse!important;margin:4px 0 0!important;font-size:8.5px!important}
  #reportContent th,#reportContent td{border:1px solid #888!important;padding:2px 3px!important;text-align:center!important;vertical-align:middle!important;line-height:1.15!important;overflow-wrap:anywhere!important}
  #reportContent th{background:#eaf2ec!important;color:#155c3c!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
- #reportContent thead{display:table-header-group!important}
- #reportContent tr{break-inside:avoid!important;page-break-inside:avoid!important}
- #reportContent .report-signature{display:block!important;max-width:48px!important;max-height:19px!important;width:auto!important;height:auto!important;object-fit:contain!important;margin:auto!important}
- #reportContent .approval-sign{max-width:75px!important;max-height:25px!important}
+ #reportContent thead{display:table-header-group!important}#reportContent tr{break-inside:avoid!important;page-break-inside:avoid!important}
+ #reportContent .report-signature{max-width:48px!important;max-height:19px!important}#reportContent .approval-sign{max-width:75px!important;max-height:25px!important}
  #reportContent .report-summary{gap:3px 12px!important;margin:3px 0!important;padding:3px 6px!important}
- #reportContent .report-summary span{font-size:9px!important}
- #reportContent .report-page-subheading{font-size:10px!important;margin:0 0 3px!important;padding-bottom:3px!important}
- #reportContent .report-approvals{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important;margin-top:7px!important;padding-top:5px!important;border-top:1px solid #999!important;break-inside:avoid!important;page-break-inside:avoid!important}
- #reportContent .approval-box{border:1px solid #999!important;border-radius:3px!important;padding:4px 7px!important;min-height:58px!important;background:#fff!important;break-inside:avoid!important;page-break-inside:avoid!important}
- #reportContent .approval-box h4{font-size:9px!important;margin:0 0 2px!important;color:#155c3c!important}
- #reportContent .approval-box p{font-size:8.5px!important;margin:2px 0!important}
+ #reportContent .report-summary span{font-size:9px!important}#reportContent .report-page-subheading{font-size:10px!important;margin:0 0 3px!important;padding-bottom:3px!important}
+ #reportContent .report-approvals{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important;margin-top:7px!important;padding-top:5px!important;border-top:1px solid #999!important}
+ #reportContent .approval-box{border:1px solid #999!important;border-radius:3px!important;padding:4px 7px!important;min-height:58px!important}
+ #reportContent .approval-box h4{font-size:9px!important;margin:0 0 2px!important}#reportContent .approval-box p{font-size:8.5px!important;margin:2px 0!important}
  header,footer,button{display:none!important}
 }
 </style>
 </head>
 <body>
-<header>
- <p>وزارة التعليم</p>
- <p>الإدارة العامة للتعليم بمنطقة الجوف</p>
- <h2>مدرسة عبدالله بن مسعود الابتدائية</h2>
- <p>منصة تبليغات التعاميم والإقرار بالعلم</p>
-</header>
-
+<header><p>وزارة التعليم</p><p>الإدارة العامة للتعليم بمنطقة الجوف</p><h2>مدرسة عبدالله بن مسعود الابتدائية</h2><p>منصة تبليغات التعاميم والإقرار بالعلم</p></header>
 <div class="container">
-<section id="employeePage" class="hidden">
- <div class="card">
-  <h3>تبليغ تعميم وطلب الاطلاع والإقرار بالعلم</h3>
-  <div id="employeeMessage" class="msg">جارٍ التحقق من رابط الموظف...</div>
-  <div id="employeeDetails" class="hidden">
-   <p><strong>الموظف:</strong> <span id="empName"></span></p>
-   <p><strong>المسمى الوظيفي:</strong> <span id="empJob"></span></p>
-   <hr>
-   <p><strong>رقم التعميم:</strong> <span id="cNumber"></span></p>
-   <p><strong>تاريخ التعميم:</strong> <span id="cDate"></span></p>
-   <p><strong>الموضوع:</strong> <span id="cSubject"></span></p>
-   <p><strong>الجهة المصدرة:</strong> <span id="cAuthority"></span></p>
-   <p><strong>الفئة المستهدفة:</strong> <span id="cTarget"></span></p>
-   <p><strong>الملاحظات:</strong> <span id="cNote"></span></p>
-   <div class="card"><strong>محتوى التعميم</strong><p id="cContent"></p></div>
-   <div id="pdfArea" class="hidden">
-    <h3>ملف التعميم المرفق</h3>
-    <a id="pdfLink" target="_blank" rel="noopener">فتح ملف PDF</a>
-    <iframe id="pdfFrame" class="pdfbox" title="ملف التعميم"></iframe>
-   </div>
-   <div id="alreadySigned" class="msg hidden"></div>
-   <div id="signArea">
-    <h3>الإقرار بالعلم والاطلاع</h3>
-    <p>أقر أنا الموضح اسمي أعلاه بأنني اطلعت على التعميم ومحتواه.</p>
-    <label>التوقيع الإلكتروني بإصبعك داخل المربع</label>
-    <canvas id="signatureCanvas" class="signature"></canvas>
-    <div class="signature-tools">
-     <button class="light" type="button" onclick="clearSignature()">مسح التوقيع</button>
-     <button class="gold" type="button" onclick="saveEmployeeSignature()">حفظ توقيعي</button>
-     <button class="light" type="button" onclick="loadEmployeeSignature()">جلب توقيع محفوظ</button>
-    </div>
-    <label class="employee">
-     <input type="checkbox" id="ackCheck">
-     أقر بالاطلاع على التعميم وأتحمل مسؤولية هذا الإقرار.
-    </label>
-    <button id="submitReceipt" type="button" onclick="submitReceipt()">إرسال الإقرار والتوقيع</button>
-   </div>
-  </div>
- </div>
-</section>
-
-<section id="loginPage" class="hidden">
- <div class="card">
-  <h3>دخول مدير المنصة</h3>
-  <label>البريد الإلكتروني</label><input id="loginEmail" type="email" autocomplete="username">
-  <label>كلمة المرور</label><input id="loginPassword" type="password" autocomplete="current-password">
-  <button onclick="login()">تسجيل الدخول</button>
-  <button class="light" onclick="resetPassword()">استعادة كلمة المرور</button>
-  <div id="loginMsg"></div>
- </div>
-</section>
-
+<section id="employeePage" class="hidden"><div class="card">
+<h3>تبليغ تعميم وطلب الاطلاع والإقرار بالعلم</h3><div id="employeeMessage" class="msg">جارٍ التحقق من رابط الموظف...</div>
+<div id="employeeDetails" class="hidden">
+<p><strong>الموظف:</strong> <span id="empName"></span></p><p><strong>المسمى الوظيفي:</strong> <span id="empJob"></span></p><hr>
+<p><strong>رقم التعميم:</strong> <span id="cNumber"></span></p><p><strong>تاريخ التعميم:</strong> <span id="cDate"></span></p>
+<p><strong>الموضوع:</strong> <span id="cSubject"></span></p><p><strong>الجهة المصدرة:</strong> <span id="cAuthority"></span></p>
+<p><strong>الفئة المستهدفة:</strong> <span id="cTarget"></span></p><p><strong>الملاحظات:</strong> <span id="cNote"></span></p>
+<div class="card"><strong>محتوى التعميم</strong><p id="cContent"></p></div>
+<div id="pdfArea" class="hidden"><h3>ملف التعميم المرفق</h3><a id="pdfLink" target="_blank" rel="noopener">فتح ملف PDF</a><iframe id="pdfFrame" class="pdfbox" title="ملف التعميم"></iframe></div>
+<div id="alreadySigned" class="msg hidden"></div><div id="signArea"><h3>الإقرار بالعلم والاطلاع</h3><p>أقر أنا الموضح اسمي أعلاه بأنني اطلعت على التعميم ومحتواه.</p>
+<label>التوقيع الإلكتروني: ارسم بإصبعك أو استورد صورة توقيع محفوظة</label><canvas id="signatureCanvas" class="signature"></canvas>
+<input id="employeeSignatureFile" type="file" accept="image/*" class="hidden" onchange="importEmployeeSignature(event)">
+<div class="signature-tools"><button class="light" type="button" onclick="clearSignature()">مسح التوقيع</button>
+<button class="gold" type="button" onclick="saveEmployeeSignature()">حفظ توقيعي</button><button class="light" type="button" onclick="loadEmployeeSignature()">جلب توقيع محفوظ</button>
+<button class="light" type="button" onclick="$('employeeSignatureFile').click()">استيراد توقيع من الآيفون</button></div>
+<label class="employee"><input type="checkbox" id="ackCheck">أقر بالاطلاع على التعميم وأتحمل مسؤولية هذا الإقرار.</label>
+<button id="submitReceipt" type="button" onclick="submitReceipt()">إرسال الإقرار والتوقيع</button></div>
+</div></div></section>
+<section id="loginPage" class="hidden"><div class="card"><h3>دخول مدير المنصة</h3><label>البريد الإلكتروني</label><input id="loginEmail" type="email" autocomplete="username">
+<label>كلمة المرور</label><input id="loginPassword" type="password" autocomplete="current-password"><button onclick="login()">تسجيل الدخول</button>
+<button class="light" onclick="resetPassword()">استعادة كلمة المرور</button><div id="loginMsg"></div></div></section>
 <section id="dashboard" class="hidden">
- <div class="card no-print">
-  <div class="row" style="justify-content:space-between;align-items:center">
-   <div><h3 style="border:0;margin:0">لوحة تحكم المدير</h3><span class="small">إدارة التعاميم ومتابعة إقرارات الموظفين</span></div>
-   <button class="danger" onclick="logout()">تسجيل الخروج</button>
-  </div>
- </div>
-
- <div class="card no-print">
-  <h3>إنشاء تعميم جديد</h3>
-  <div class="row">
-   <div class="col"><label>رقم التعميم</label><input id="circularNumber"></div>
-   <div class="col"><label>تاريخ التعميم</label><input id="circularDate" type="date"></div>
-  </div>
-  <label>موضوع التعميم</label><input id="subject">
-  <label>الجهة المصدرة</label><input id="authority">
-  <label>الفئة المستهدفة</label>
-  <select id="target">
-   <option value="جميع منسوبي المدرسة">جميع منسوبي المدرسة</option>
-   <option value="المعلمون">المعلمون</option>
-   <option value="الإداريون">الإداريون</option>
-   <option value="فئة محددة">فئة محددة</option>
-  </select>
-  <label>ملاحظات إضافية</label><input id="recipientNote">
-  <label>محتوى التعميم</label><textarea id="content"></textarea>
-  <label>إرفاق ملف PDF</label><input id="pdfFile" type="file" accept="application/pdf">
-  <div class="row">
-   <button class="light" onclick="loadEmployees()">تحديث قائمة الموظفين</button>
-   <button class="light" onclick="selectAllEmployees(true)">تحديد الجميع</button>
-   <button class="light" onclick="selectAllEmployees(false)">إلغاء تحديد الجميع</button>
-  </div>
-  <label>البحث باسم الموظف</label><input id="employeeSearch" oninput="renderEmployeeChoices()" placeholder="اكتب اسم الموظف">
-  <p class="small">عدد الموظفين في السجل: <strong id="employeeCount">0</strong></p>
-  <div id="employeeChoices"></div>
-  <p>عدد المستلمين المحددين: <strong id="selectedCount">0</strong></p>
-  <button onclick="createCircular()">حفظ التعميم وإنشاء روابط الموظفين</button>
-  <div id="createMsg"></div>
- </div>
-
- <div class="card no-print">
-  <h3>إدارة سجل الموظفين</h3>
-  <div class="row">
-   <div class="col"><label>اسم الموظف</label><input id="newEmpName"></div>
-   <div class="col"><label>المسمى الوظيفي</label><input id="newEmpJob"></div>
-  </div>
-  <div class="row">
-   <div class="col"><label>التخصص</label><input id="newEmpSpec"></div>
-   <div class="col"><label>رقم الجوال</label><input id="newEmpPhone" type="tel"></div>
-  </div>
-  <button onclick="addEmployee()">إضافة موظف جديد</button>
-  <div id="employeeAdminList"></div><div id="employeeAdminMsg"></div>
- </div>
-
- <div class="card no-print">
-  <h3>سجل التعاميم ومتابعة الإقرارات</h3>
-  <div class="actions">
-   <button class="light" onclick="loadCirculars()">تحديث السجل</button>
-   <button class="light" onclick="toggleHiddenCirculars()" id="hiddenCircularsButton">إظهار التعاميم المخفية</button>
-  </div>
-  <div id="circularList">جارٍ تحميل التعاميم...</div>
- </div>
-
- <div id="reportSection" class="card hidden">
-  <div class="row no-print" style="justify-content:space-between">
-   <h3>تقرير إقرارات الموظفين</h3>
-   <button onclick="printReport()">طباعة التقرير / حفظ PDF</button>
-  </div>
-
-  <div class="no-print">
-   <h3>توقيعات اعتماد التقرير</h3>
-   <div class="approval-editor">
-    <strong>توقيع معد التقرير - خالد شاقي الرويلي</strong>
-    <canvas id="preparerCanvas" class="signature"></canvas>
-    <div class="signature-tools">
-     <button class="light" onclick="clearApprovalSignature('preparer')">مسح</button>
-     <button class="gold" onclick="saveApprovalSignature('preparer')">حفظ التوقيع</button>
-     <button class="light" onclick="loadApprovalSignature('preparer')">جلب توقيع محفوظ</button>
-    </div>
-   </div>
-   <div class="approval-editor">
-    <strong>اعتماد مدير المدرسة - عويد عشبان الرويلي</strong>
-    <canvas id="principalCanvas" class="signature"></canvas>
-    <div class="signature-tools">
-     <button class="light" onclick="clearApprovalSignature('principal')">مسح</button>
-     <button class="gold" onclick="saveApprovalSignature('principal')">حفظ التوقيع</button>
-     <button class="light" onclick="loadApprovalSignature('principal')">جلب توقيع محفوظ</button>
-    </div>
-   </div>
-  </div>
-  <div id="reportContent"></div>
- </div>
-</section>
-</div>
-
+<div class="card no-print"><div class="row" style="justify-content:space-between;align-items:center"><div><h3 style="border:0;margin:0">لوحة تحكم المدير</h3><span class="small">إدارة التعاميم ومتابعة إقرارات الموظفين</span></div><button class="danger" onclick="logout()">تسجيل الخروج</button></div></div>
+<div class="card no-print"><h3>إنشاء تعميم جديد</h3><div class="row"><div class="col"><label>رقم التعميم</label><input id="circularNumber"></div><div class="col"><label>تاريخ التعميم</label><input id="circularDate" type="date"></div></div>
+<label>موضوع التعميم</label><input id="subject"><label>الجهة المصدرة</label><input id="authority"><label>الفئة المستهدفة</label>
+<select id="target"><option value="جميع منسوبي المدرسة">جميع منسوبي المدرسة</option><option value="المعلمون">المعلمون</option><option value="الإداريون">الإداريون</option><option value="فئة محددة">فئة محددة</option></select>
+<label>ملاحظات إضافية</label><input id="recipientNote"><label>محتوى التعميم</label><textarea id="content"></textarea><label>إرفاق ملف PDF</label><input id="pdfFile" type="file" accept="application/pdf">
+<div class="row"><button class="light" onclick="loadEmployees()">تحديث قائمة الموظفين</button><button class="light" onclick="selectAllEmployees(true)">تحديد الجميع</button><button class="light" onclick="selectAllEmployees(false)">إلغاء تحديد الجميع</button></div>
+<label>البحث باسم الموظف</label><input id="employeeSearch" oninput="renderEmployeeChoices()" placeholder="اكتب اسم الموظف"><p class="small">عدد الموظفين في السجل: <strong id="employeeCount">0</strong></p>
+<div id="employeeChoices"></div><p>عدد المستلمين المحددين: <strong id="selectedCount">0</strong></p><button onclick="createCircular()">حفظ التعميم وإنشاء روابط الموظفين</button><div id="createMsg"></div></div>
+<details class="card no-print employee-admin"><summary>إدارة سجل الموظفين وإضافة موظف</summary><div class="details-body">
+<div class="row"><div class="col"><label>اسم الموظف</label><input id="newEmpName"></div><div class="col"><label>المسمى الوظيفي</label><input id="newEmpJob"></div></div>
+<div class="row"><div class="col"><label>التخصص</label><input id="newEmpSpec"></div><div class="col"><label>رقم الجوال</label><input id="newEmpPhone" type="tel"></div></div>
+<button onclick="addEmployee()">إضافة موظف جديد</button><div id="employeeAdminList"></div><div id="employeeAdminMsg"></div></div></details>
+<div class="card no-print"><h3>سجل التعاميم ومتابعة الإقرارات</h3><div class="actions"><button class="light" onclick="loadCirculars()">تحديث السجل</button><button class="light" onclick="toggleHiddenCirculars()" id="hiddenCircularsButton">إظهار التعاميم المخفية</button></div><div id="circularList">جارٍ تحميل التعاميم...</div></div>
+<div id="reportSection" class="card hidden"><div class="row no-print" style="justify-content:space-between;align-items:center"><h3>تقرير إقرارات الموظفين</h3><div><button onclick="printReport()">طباعة التقرير / حفظ PDF</button><button class="secondary" onclick="closeReport()">إغلاق التقرير</button></div></div>
+<div class="no-print"><h3>توقيعات اعتماد التقرير</h3>
+<div class="approval-editor"><strong>توقيع معد التقرير - مساعد إداري / خالد شاقي الرويلي</strong><canvas id="preparerCanvas" class="signature"></canvas>
+<input id="preparerSignatureFile" type="file" accept="image/*" class="hidden" onchange="importApprovalSignature(event,'preparer')">
+<div class="signature-tools"><button class="light" onclick="clearApprovalSignature('preparer')">مسح</button><button class="gold" onclick="saveApprovalSignature('preparer')">حفظ التوقيع</button><button class="light" onclick="loadApprovalSignature('preparer')">جلب توقيع محفوظ</button><button class="light" onclick="$('preparerSignatureFile').click()">استيراد صورة توقيع</button></div></div>
+<div class="approval-editor"><strong>اعتماد مدير المدرسة - عويد عشبان الرويلي</strong><canvas id="principalCanvas" class="signature"></canvas>
+<input id="principalSignatureFile" type="file" accept="image/*" class="hidden" onchange="importApprovalSignature(event,'principal')">
+<div class="signature-tools"><button class="light" onclick="clearApprovalSignature('principal')">مسح</button><button class="gold" onclick="saveApprovalSignature('principal')">حفظ التوقيع</button><button class="light" onclick="loadApprovalSignature('principal')">جلب توقيع محفوظ</button><button class="light" onclick="$('principalSignatureFile').click()">استيراد صورة توقيع</button></div></div></div>
+<div id="reportContent"></div></div></section></div>
 <footer>إعداد وتصميم: مساعد إداري / خالد شاقي الرويلي</footer>
-
 <script>
-
-const SUPABASE_URL = "https://dfraanyolhzqqypkkcbn.supabase.co";
-const SUPABASE_KEY = "sb_publishable_lP0Hcv0OKe2PWnksDigP2Q_KaWxmfCV";
-const FUNCTION_URL = SUPABASE_URL + "/functions/v1/submit-circular-receipt";
-const BUCKET = "notif-files";
-const ADMIN_UID = "876f9b5d-3258-43c1-8e83-dfe1acfcb3f";
-
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-let employees=[];
-let selectedEmployees=new Set();
-let currentReceiptToken="";
-let receiptData=null;
-let canvas,ctx,drawing=false,hasSignature=false;
-let localSignatureKey="";
-let approvalCanvases={};
-let approvalContexts={};
-let approvalHasSignature={preparer:false,principal:false};
-let showHiddenCirculars=false;
-
+const SUPABASE_URL="https://dfraanyolhzqqypkkcbn.supabase.co";
+const SUPABASE_KEY="sb_publishable_lP0Hcv0OKe2PWnksDigP2Q_KaWxmfCV";
+const FUNCTION_URL=SUPABASE_URL+"/functions/v1/submit-circular-receipt",BUCKET="notif-files",ADMIN_UID="876f9b5d-3258-43c1-8e83-dfe1acfcb3f";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let employees=[],selectedEmployees=new Set(),currentReceiptToken="",receiptData=null,canvas,ctx,drawing=false,hasSignature=false,localSignatureKey="",approvalCanvases={},approvalContexts={},approvalHasSignature={preparer:false,principal:false},showHiddenCirculars=false,currentReportCircularId="";
 const HIDDEN_KEY="abdullah_hidden_circulars_v1";
-
-function $(id){return document.getElementById(id)}
-function show(id){$(id).classList.remove("hidden")}
-function hide(id){$(id).classList.add("hidden")}
-
-function msg(id,text,error=false){
- $(id).innerHTML='<div class="msg '+(error?'error':'')+'">'+escapeHTML(text)+'</div>';
-}
-
-function escapeHTML(value){
- return String(value??"").replace(/[&<>"']/g,c=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[c]));
-}
-
-function formatDate(v){
- if(!v)return "—";
- return new Date(v).toLocaleDateString("ar-SA");
-}
-function formatDateTime(v){
- if(!v)return "—";
- return new Date(v).toLocaleString("ar-SA");
-}
-
-function formatReportDate(v){
- if(!v)return "—";
- const parts=String(v).slice(0,10).split("-");
- if(parts.length!==3)return "—";
- const date=new Date(Number(parts[0]),Number(parts[1])-1,Number(parts[2]));
- try{
-  return new Intl.DateTimeFormat("en-GB-u-ca-islamic-umalqura-nu-latn",
-   {day:"2-digit",month:"2-digit",year:"numeric"}).format(date);
- }catch(e){
-  return new Intl.DateTimeFormat("en-GB",
-   {day:"2-digit",month:"2-digit",year:"numeric"}).format(date);
- }
-}
-
-function formatReportDateTime(v){
- if(!v)return "—";
- const date=new Date(v);
- if(isNaN(date.getTime()))return "—";
- let datePart;
- try{
-  datePart=new Intl.DateTimeFormat("en-GB-u-ca-islamic-umalqura-nu-latn",
-   {day:"2-digit",month:"2-digit",year:"numeric"}).format(date);
- }catch(e){
-  datePart=new Intl.DateTimeFormat("en-GB",
-   {day:"2-digit",month:"2-digit",year:"numeric"}).format(date);
- }
- const timePart=new Intl.DateTimeFormat("ar-SA",
-  {hour:"2-digit",minute:"2-digit"}).format(date);
- return datePart+" - "+timePart;
-}
-
-function setInitialDate(){
- if($("circularDate"))$("circularDate").value=new Date().toISOString().slice(0,10);
-}
-
-function normalizePhone(phone){
- let p=String(phone||"").replace(/\D/g,"");
- if(p.startsWith("05"))p="966"+p.slice(1);
- else if(p.startsWith("5"))p="966"+p;
- return p;
-}
-
-function receiptUrl(token){
- return location.origin+location.pathname+"?receipt="+encodeURIComponent(token);
-}
-
-/* قاعدة بيانات التوقيعات المحلية */
-function openSignatureDB(){
- return new Promise((resolve,reject)=>{
-  const request=indexedDB.open("AbdullahSchoolSignatures",1);
-  request.onupgradeneeded=()=>{
-   const database=request.result;
-   if(!database.objectStoreNames.contains("signatures")){
-    database.createObjectStore("signatures");
-   }
-  };
-  request.onsuccess=()=>resolve(request.result);
-  request.onerror=()=>reject(request.error);
- });
-}
-
-async function saveLocalSignature(key,dataUrl){
- const database=await openSignatureDB();
- return new Promise((resolve,reject)=>{
-  const transaction=database.transaction("signatures","readwrite");
-  transaction.objectStore("signatures").put(dataUrl,key);
-  transaction.oncomplete=()=>{database.close();resolve(true)};
-  transaction.onerror=()=>{database.close();reject(transaction.error)};
- });
-}
-
-async function getLocalSignature(key){
- const database=await openSignatureDB();
- return new Promise((resolve,reject)=>{
-  const transaction=database.transaction("signatures","readonly");
-  const request=transaction.objectStore("signatures").get(key);
-  request.onsuccess=()=>{database.close();resolve(request.result||null)};
-  request.onerror=()=>{database.close();reject(request.error)};
- });
-}
-
-async function deleteLocalSignature(key){
- const database=await openSignatureDB();
- return new Promise((resolve,reject)=>{
-  const transaction=database.transaction("signatures","readwrite");
-  transaction.objectStore("signatures").delete(key);
-  transaction.oncomplete=()=>{database.close();resolve(true)};
-  transaction.onerror=()=>{database.close();reject(transaction.error)};
- });
-}
-
-function makeEmployeeSignatureKey(employee){
- const name=String(employee?.full_name||"").trim().replace(/\s+/g," ");
- const job=String(employee?.job_title||"").trim().replace(/\s+/g," ");
- return "employee:"+name+":"+job;
-}
-
-async function saveEmployeeSignature(){
- if(!canvas||!hasSignature){alert("وقّع أولاً قبل الحفظ");return}
- try{
-  await saveLocalSignature(localSignatureKey,canvas.toDataURL("image/png"));
-  alert("تم حفظ توقيعك على هذا الجهاز بنجاح");
- }catch(e){alert("تعذر حفظ التوقيع: "+e.message)}
-}
-
-async function loadEmployeeSignature(){
- if(!canvas)return;
- try{
-  const dataUrl=await getLocalSignature(localSignatureKey);
-  if(!dataUrl){alert("لا يوجد توقيع محفوظ لهذا الموظف على هذا الجهاز");return}
-  const image=new Image();
-  image.onload=()=>{
-   const rect=canvas.getBoundingClientRect();
-   ctx.clearRect(0,0,rect.width,rect.height);
-   ctx.drawImage(image,0,0,rect.width,rect.height);
-   hasSignature=true;
-  };
-  image.onerror=()=>alert("تعذر قراءة صورة التوقيع");
-  image.src=dataUrl;
- }catch(e){alert("تعذر جلب التوقيع: "+e.message)}
-}
-
-/* إخفاء التعاميم محليًا دون حذفها من Supabase */
-function getHiddenCircularIds(){
- try{return JSON.parse(localStorage.getItem(HIDDEN_KEY)||"[]")}
- catch(e){return []}
-}
-
-function setHiddenCircularIds(ids){
- localStorage.setItem(HIDDEN_KEY,JSON.stringify([...new Set(ids)]));
-}
-
-function hideCircularLocally(id){
- const ids=getHiddenCircularIds();
- if(!ids.includes(id))ids.push(id);
- setHiddenCircularIds(ids);
-}
-
-function restoreCircularLocally(id){
- setHiddenCircularIds(getHiddenCircularIds().filter(x=>x!==id));
-}
-
-async function toggleCircularHidden(id,isHidden){
- const action=isHidden?"استعادة":"إخفاء";
- if(!confirm("هل تريد "+action+" هذا التعميم من سجل هذا الجهاز؟\nلن يتم حذف أي بيانات أو توقيعات."))return;
- if(isHidden)restoreCircularLocally(id);
- else hideCircularLocally(id);
- await loadCirculars();
-}
-
-function toggleHiddenCirculars(){
- showHiddenCirculars=!showHiddenCirculars;
- $("hiddenCircularsButton").textContent=showHiddenCirculars?
-  "عرض التعاميم النشطة":"إظهار التعاميم المخفية";
- loadCirculars();
-}
-
-async function startApp(){
- const params=new URLSearchParams(location.search);
- const token=params.get("receipt");
- if(token){
-  hide("loginPage");hide("dashboard");show("employeePage");
-  currentReceiptToken=token;
-  await loadEmployeeReceipt(token);
-  return;
- }
- hide("employeePage");
- const {data:{session}}=await db.auth.getSession();
- if(!session){show("loginPage");hide("dashboard");return}
- await checkSession();
-}
-
-async function login(){
- const email=$("loginEmail").value.trim();
- const password=$("loginPassword").value;
- if(!email||!password){msg("loginMsg","أدخل البريد الإلكتروني وكلمة المرور",true);return}
- const {error}=await db.auth.signInWithPassword({email,password});
- if(error){msg("loginMsg",error.message,true);return}
- await checkSession();
-}
-
-async function resetPassword(){
- const email=$("loginEmail").value.trim();
- if(!email){msg("loginMsg","أدخل البريد الإلكتروني أولاً",true);return}
- const {error}=await db.auth.resetPasswordForEmail(email,{
-  redirectTo:location.origin+location.pathname
- });
- msg("loginMsg",error?error.message:"تم إرسال رابط استعادة كلمة المرور إلى بريدك الإلكتروني",!!error);
-}
-
-async function logout(){
- await db.auth.signOut();
- hide("dashboard");show("loginPage");
-}
-
-async function checkSession(){
- const {data:{session}}=await db.auth.getSession();
- if(!session){show("loginPage");hide("dashboard");return}
- const {data,error}=await db.from("notif_admins")
-  .select("user_id").eq("user_id",session.user.id).maybeSingle();
- if(error||!data){
-  await db.auth.signOut();
-  show("loginPage");hide("dashboard");
-  msg("loginMsg","هذا الحساب غير مخول بدخول لوحة الإدارة",true);
-  return;
- }
- hide("loginPage");show("dashboard");
- await loadEmployees();
- await loadCirculars();
-}
-
-async function loadEmployeeReceipt(token){
- try{
-  const response=await fetch(FUNCTION_URL+"?token="+encodeURIComponent(token),{
-   method:"GET",headers:{"apikey":SUPABASE_KEY}
-  });
-  const result=await response.json();
-  if(!response.ok||!result.success)throw new Error(result.error||"تعذر التحقق من الرابط");
-  receiptData=result;
-  localSignatureKey=makeEmployeeSignatureKey(result.employee);
-  $("empName").textContent=result.employee?.full_name||"—";
-  $("empJob").textContent=result.employee?.job_title||"—";
-  $("cNumber").textContent=result.circular?.circular_number||"—";
-  $("cDate").textContent=formatDate(result.circular?.circular_date);
-  $("cSubject").textContent=result.circular?.subject||"—";
-  $("cAuthority").textContent=result.circular?.issuing_authority||"—";
-  $("cTarget").textContent=result.circular?.target||"—";
-  $("cNote").textContent=result.circular?.recipient_note||"لا يوجد";
-  $("cContent").textContent=result.circular?.content||"لا يوجد محتوى نصي";
-  if(result.pdf_url){
-   $("pdfLink").href=result.pdf_url;
-   $("pdfFrame").src=result.pdf_url;
-   show("pdfArea");
-  }
-  show("employeeDetails");
-  if(result.acknowledged){
-   $("alreadySigned").textContent="تم تسجيل إقرارك مسبقًا بتاريخ: "+formatDateTime(result.signed_at);
-   show("alreadySigned");hide("signArea");
-  }else{
-   setupSignature();
-  }
-  $("employeeMessage").textContent="تم التحقق من الرابط بنجاح.";
- }catch(e){msg("employeeMessage",e.message||"حدث خطأ أثناء فتح الرابط",true)}
-}
-
-function setupSignature(){
- canvas=$("signatureCanvas");
- ctx=canvas.getContext("2d");
- const resize=()=>{
-  const rect=canvas.getBoundingClientRect();
-  const ratio=window.devicePixelRatio||1;
-  canvas.width=rect.width*ratio;canvas.height=rect.height*ratio;
-  ctx.setTransform(ratio,0,0,ratio,0,0);
-  ctx.lineWidth=2.5;ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle="#153d2b";
- };
- resize();
- const point=e=>{
-  const r=canvas.getBoundingClientRect();
-  return {x:e.clientX-r.left,y:e.clientY-r.top};
- };
- canvas.onpointerdown=e=>{
-  drawing=true;hasSignature=true;canvas.setPointerCapture(e.pointerId);
-  const p=point(e);ctx.beginPath();ctx.moveTo(p.x,p.y);
- };
- canvas.onpointermove=e=>{
-  if(!drawing)return;
-  const p=point(e);ctx.lineTo(p.x,p.y);ctx.stroke();
- };
- canvas.onpointerup=()=>drawing=false;
- canvas.onpointercancel=()=>drawing=false;
-}
-
-function clearSignature(){
- if(!canvas)return;
- ctx.clearRect(0,0,canvas.width,canvas.height);
- hasSignature=false;
-}
-
-async function submitReceipt(){
- if(!receiptData||!currentReceiptToken)return;
- if(!hasSignature){alert("يرجى التوقيع داخل مربع التوقيع");return}
- if(!$("ackCheck").checked){alert("يرجى تحديد الإقرار بالاطلاع أولاً");return}
- const button=$("submitReceipt");
- button.disabled=true;button.textContent="جارٍ إرسال الإقرار...";
- try{
-  const signature=canvas.toDataURL("image/png");
-  const response=await fetch(FUNCTION_URL,{
-   method:"POST",
-   headers:{"Content-Type":"application/json","apikey":SUPABASE_KEY},
-   body:JSON.stringify({token:currentReceiptToken,signature})
-  });
-  const result=await response.json();
-  if(!response.ok||!result.success)throw new Error(result.error||"تعذر حفظ الإقرار");
-  hide("signArea");
-  $("alreadySigned").textContent="تم إرسال إقرارك وتوقيعك بنجاح. شكرًا لتعاونك.";
-  show("alreadySigned");
- }catch(e){
-  alert(e.message||"حدث خطأ أثناء الحفظ");
-  button.disabled=false;button.textContent="إرسال الإقرار والتوقيع";
- }
-}
-
-async function loadEmployees(){
- const {data,error}=await db.from("notif_employees")
-  .select("id,full_name,job_title,specialization,phone,employment_status")
-  .order("full_name");
- if(error){msg("createMsg","تعذر تحميل الموظفين: "+error.message,true);return}
- employees=data||[];
- $("employeeCount").textContent=employees.length;
- renderEmployeeChoices();renderEmployeeAdmin();
-}
-
-function renderEmployeeChoices(){
- const q=($("employeeSearch").value||"").trim().toLowerCase();
- const filtered=employees.filter(e=>(e.full_name||"").toLowerCase().includes(q));
- $("employeeChoices").innerHTML=filtered.map(e=>`
-  <label class="employee">
-   <input type="checkbox" ${selectedEmployees.has(e.id)?"checked":""}
-    onchange="toggleEmployee('${e.id}',this.checked)">
-   <span>${escapeHTML(e.full_name)} <span class="small">${escapeHTML(e.job_title||"")}</span></span>
-  </label>`).join("")||'<p class="small">لا توجد نتائج مطابقة.</p>';
- $("selectedCount").textContent=selectedEmployees.size;
-}
-
-function toggleEmployee(id,checked){
- if(checked)selectedEmployees.add(id);else selectedEmployees.delete(id);
- $("selectedCount").textContent=selectedEmployees.size;
-}
-
-function selectAllEmployees(value){
- if(value)employees.forEach(e=>selectedEmployees.add(e.id));
- else selectedEmployees.clear();
- renderEmployeeChoices();
-}
-
-async function createCircular(){
- const number=$("circularNumber").value.trim();
- const date=$("circularDate").value;
- const subject=$("subject").value.trim();
- if(!number||!date||!subject){msg("createMsg","يرجى إدخال رقم التعميم وتاريخه وموضوعه",true);return}
- if(!selectedEmployees.size){msg("createMsg","حدد موظفًا واحدًا على الأقل",true);return}
- const file=$("pdfFile").files[0];
- if(file&&file.type!=="application/pdf"){msg("createMsg","الملف المرفق يجب أن يكون PDF",true);return}
- msg("createMsg","جارٍ حفظ التعميم وإنشاء روابط الموظفين...");
- let pdfPath=null,circularId=null;
- try{
-  if(file){
-   const safeName=Date.now()+"-"+file.name.replace(/[^\w.\-]/g,"_");
-   pdfPath="circulars/"+safeName;
-   const {error:upErr}=await db.storage.from(BUCKET).upload(pdfPath,file,{contentType:"application/pdf",upsert:false});
-   if(upErr)throw upErr;
-  }
-  const {data:cir,error}=await db.from("notif_circulars").insert({
-   circular_number:number,circular_date:date,subject,
-   issuing_authority:$("authority").value.trim(),
-   recipient_note:$("recipientNote").value.trim(),
-   content:$("content").value.trim(),target:$("target").value,
-   pdf_path:pdfPath,status:"draft"
-  }).select("id").single();
-  if(error)throw error;
-  circularId=cir.id;
-  const rows=[...selectedEmployees].map(employee_id=>({
-   circular_id:circularId,employee_id,access_token:crypto.randomUUID(),status:"pending"
-  }));
-  const {error:recErr}=await db.from("notif_recipients").insert(rows);
-  if(recErr)throw recErr;
-  msg("createMsg","تم حفظ التعميم وإنشاء روابط خاصة للمستلمين. راجع التعميم في السجل ثم أتح الإرسال.");
-  ["circularNumber","subject","authority","recipientNote","content","pdfFile"].forEach(id=>$(id).value="");
-  selectedEmployees.clear();renderEmployeeChoices();await loadCirculars();
- }catch(e){
-  if(circularId){
-   await db.from("notif_recipients").delete().eq("circular_id",circularId);
-   await db.from("notif_circulars").delete().eq("id",circularId);
-  }
-  msg("createMsg","تعذر إنشاء التعميم: "+(e.message||e),true);
- }
-}
-
-async function getCircularRecipients(circularId){
- const {data,error}=await db.from("notif_recipients")
-  .select("id,employee_id,access_token,status,sent_at,created_at")
-  .eq("circular_id",circularId);
- if(error)throw error;
- const recipients=data||[],ids=recipients.map(r=>r.id);
- let receipts=[];
- if(ids.length){
-  const {data:d,error:e}=await db.from("notif_receipts")
-   .select("id,recipient_id,signature_path,acknowledged,signed_at").in("recipient_id",ids);
-  if(e)throw e;
-  receipts=d||[];
- }
- return recipients.map(r=>({...r,receipt:receipts.find(x=>x.recipient_id===r.id)||null}));
-}
-
-async function loadCirculars(){
- $("circularList").textContent="جارٍ تحميل التعاميم...";
- const {data:circulars,error}=await db.from("notif_circulars")
-  .select("*").order("created_at",{ascending:false});
- if(error){$("circularList").textContent="تعذر تحميل السجل: "+error.message;return}
- if(!circulars?.length){$("circularList").textContent="لا توجد تعاميم مسجلة.";return}
- const hiddenIds=getHiddenCircularIds();
- const visible=circulars.filter(c=>showHiddenCirculars?
-  hiddenIds.includes(c.id):!hiddenIds.includes(c.id));
- const {data:emps}=await db.from("notif_employees").select("id,full_name,phone");
- const empMap=Object.fromEntries((emps||[]).map(e=>[e.id,e]));
- if(!visible.length){
-  $("circularList").innerHTML=showHiddenCirculars?
-   '<p class="small">لا توجد تعاميم مخفية.</p>':'<p class="small">لا توجد تعاميم ظاهرة في السجل.</p>';
-  return;
- }
- let html="";
- for(const c of visible){
-  let recipients=[];
-  try{recipients=await getCircularRecipients(c.id)}catch(e){console.error(e)}
-  const done=recipients.filter(r=>r.receipt?.acknowledged).length;
-  const isHidden=hiddenIds.includes(c.id);
-  html+=`<div class="circular">
-   <h4>التعميم رقم ${escapeHTML(c.circular_number)} - ${escapeHTML(c.subject)}</h4>
-   <p class="small">التاريخ: ${formatDate(c.circular_date)} | الحالة: ${escapeHTML(c.status||"—")}</p>
-   <p>عدد المستلمين: ${recipients.length} | الإقرارات المسجلة: ${done}</p>
-   <div class="actions no-print">
-    ${!isHidden&&c.status!=="approved"?
-     `<button class="gold" onclick="approveCircular('${c.id}')">إتاحة الإرسال</button>`:
-     (!isHidden?"<span class='pill'>متاح للإرسال</span>":"")}
-    ${!isHidden?`<button class="light" onclick="showReport('${c.id}')">عرض تقرير الإقرارات</button>`:""}
-    <button class="${isHidden?"gold":"danger"}" onclick="toggleCircularHidden('${c.id}',${isHidden})">
-     ${isHidden?"استعادة إلى السجل":"إخفاء من السجل"}
-    </button>
-   </div>`;
-  if(!isHidden){
-   html+=`<div class="tablewrap"><table><thead><tr>
-    <th>الموظف</th><th>حالة الإقرار</th><th>تاريخ الإقرار</th><th class="no-print">الإجراء</th>
-   </tr></thead><tbody>`;
-   for(const r of recipients){
-    const emp=empMap[r.employee_id]||{},signed=!!r.receipt?.acknowledged;
-    html+=`<tr>
-     <td>${escapeHTML(emp.full_name||"موظف غير معروف")}</td>
-     <td>${signed?"<span class='pill'>تم الإقرار</span>":"<span class='pill'>بانتظار الإقرار</span>"}</td>
-     <td>${signed?formatDateTime(r.receipt.signed_at):"—"}</td>
-     <td class="no-print">${c.status==="approved"&&emp.phone?
-      `<button class="light" onclick="sendWhatsApp('${escapeHTML(emp.phone)}','${r.access_token}')">إرسال واتساب</button>`:"—"}</td>
-    </tr>`;
-   }
-   html+="</tbody></table></div>";
-  }
-  html+="</div>";
- }
- $("circularList").innerHTML=html;
-}
-
-async function approveCircular(id){
- if(!confirm("هل تريد إتاحة إرسال روابط هذا التعميم إلى الموظفين؟"))return;
- const {error}=await db.from("notif_circulars").update({status:"approved"}).eq("id",id);
- if(error){alert("تعذر تحديث الحالة: "+error.message);return}
- await loadCirculars();
-}
-
-function sendWhatsApp(phone,token){
- const url=receiptUrl(token);
- const message=`الموضوع: تبليغ تعميم وطلب الاطلاع والإقرار بالعلم
+function $(id){return document.getElementById(id)}function show(id){$(id).classList.remove("hidden")}function hide(id){$(id).classList.add("hidden")}
+function msg(id,text,error=false){$(id).innerHTML='<div class="msg '+(error?'error':'')+'">'+escapeHTML(text)+'</div>'}
+function escapeHTML(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function formatDate(v){return v?new Date(v).toLocaleDateString("ar-SA"):"—"}function formatDateTime(v){return v?new Date(v).toLocaleString("ar-SA"):"—"}
+function formatReportDate(v){if(!v)return"—";let p=String(v).slice(0,10).split("-");if(p.length!==3)return"—";let d=new Date(+p[0],+p[1]-1,+p[2]);try{return new Intl.DateTimeFormat("en-GB-u-ca-islamic-umalqura-nu-latn",{day:"2-digit",month:"2-digit",year:"numeric"}).format(d)}catch(e){return new Intl.DateTimeFormat("en-GB",{day:"2-digit",month:"2-digit",year:"numeric"}).format(d)}}
+function formatReportDateTime(v){if(!v)return"—";let d=new Date(v);if(isNaN(d))return"—";let dp;try{dp=new Intl.DateTimeFormat("en-GB-u-ca-islamic-umalqura-nu-latn",{day:"2-digit",month:"2-digit",year:"numeric"}).format(d)}catch(e){dp=new Intl.DateTimeFormat("en-GB",{day:"2-digit",month:"2-digit",year:"numeric"}).format(d)}return dp+" - "+new Intl.DateTimeFormat("ar-SA",{hour:"2-digit",minute:"2-digit"}).format(d)}
+function setInitialDate(){if($("circularDate"))$("circularDate").value=new Date().toISOString().slice(0,10)}
+function normalizePhone(phone){let p=String(phone||"").replace(/\D/g,"");if(p.startsWith("05"))p="966"+p.slice(1);else if(p.startsWith("5"))p="966"+p;return p}
+function receiptUrl(token){return location.origin+location.pathname+"?receipt="+encodeURIComponent(token)}
+function openSignatureDB(){return new Promise((resolve,reject)=>{let r=indexedDB.open("AbdullahSchoolSignatures",1);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains("signatures"))r.result.createObjectStore("signatures")};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)})}
+async function saveLocalSignature(key,data){let d=await openSignatureDB();return new Promise((res,rej)=>{let t=d.transaction("signatures","readwrite");t.objectStore("signatures").put(data,key);t.oncomplete=()=>{d.close();res(true)};t.onerror=()=>{d.close();rej(t.error)}})}
+async function getLocalSignature(key){let d=await openSignatureDB();return new Promise((res,rej)=>{let t=d.transaction("signatures","readonly"),r=t.objectStore("signatures").get(key);r.onsuccess=()=>{d.close();res(r.result||null)};r.onerror=()=>{d.close();rej(r.error)}})}
+function makeEmployeeSignatureKey(e){return"employee:"+String(e?.full_name||"").trim().replace(/\s+/g," ")+":"+String(e?.job_title||"").trim().replace(/\s+/g," ")}
+function loadDataToCanvas(data,c,context){return new Promise((resolve,reject)=>{let im=new Image();im.onload=()=>{let r=c.getBoundingClientRect(),w=r.width,h=r.height,scale=Math.min(w/im.width,h/im.height),dw=im.width*scale,dh=im.height*scale;context.clearRect(0,0,w,h);context.drawImage(im,(w-dw)/2,(h-dh)/2,dw,dh);resolve(true)};im.onerror=()=>reject(new Error("تعذر قراءة صورة التوقيع"));im.src=data})}
+async function importEmployeeSignature(ev){let f=ev.target.files?.[0];ev.target.value="";if(!f)return;if(!f.type.startsWith("image/")){alert("اختر صورة توقيع");return}try{let data=await fileToDataURL(f);await loadDataToCanvas(data,canvas,ctx);hasSignature=true;await saveLocalSignature(localSignatureKey,canvas.toDataURL("image/png"));alert("تم استيراد التوقيع وحفظه على هذا الجهاز")}catch(e){alert(e.message)}}
+function fileToDataURL(file){return new Promise((res,rej)=>{let r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(new Error("تعذرت قراءة الملف"));r.readAsDataURL(file)})}
+async function saveEmployeeSignature(){if(!canvas||!hasSignature){alert("وقّع أو استورد صورة التوقيع أولاً");return}try{await saveLocalSignature(localSignatureKey,canvas.toDataURL("image/png"));alert("تم حفظ توقيعك على هذا الجهاز بنجاح")}catch(e){alert("تعذر حفظ التوقيع: "+e.message)}}
+async function loadEmployeeSignature(){if(!canvas)return;try{let d=await getLocalSignature(localSignatureKey);if(!d){alert("لا يوجد توقيع محفوظ لهذا الموظف على هذا الجهاز");return}await loadDataToCanvas(d,canvas,ctx);hasSignature=true}catch(e){alert(e.message)}}
+function getHiddenCircularIds(){try{return JSON.parse(localStorage.getItem(HIDDEN_KEY)||"[]")}catch(e){return[]}}
+function setHiddenCircularIds(ids){localStorage.setItem(HIDDEN_KEY,JSON.stringify([...new Set(ids)]))}
+function hideCircularLocally(id){let a=getHiddenCircularIds();if(!a.includes(id))a.push(id);setHiddenCircularIds(a)}
+function restoreCircularLocally(id){setHiddenCircularIds(getHiddenCircularIds().filter(x=>x!==id))}
+async function toggleCircularHidden(id,isHidden){if(!confirm("هل تريد "+(isHidden?"استعادة":"إخفاء")+" هذا التعميم من سجل هذا الجهاز؟ لن يتم حذف أي بيانات أو توقيعات."))return;if(isHidden)restoreCircularLocally(id);else hideCircularLocally(id);await loadCirculars()}
+function toggleHiddenCirculars(){showHiddenCirculars=!showHiddenCirculars;$("hiddenCircularsButton").textContent=showHiddenCirculars?"عرض التعاميم النشطة":"إظهار التعاميم المخفية";loadCirculars()}
+async function startApp(){let token=new URLSearchParams(location.search).get("receipt");if(token){hide("loginPage");hide("dashboard");show("employeePage");currentReceiptToken=token;await loadEmployeeReceipt(token);return}hide("employeePage");let {data:{session}}=await db.auth.getSession();if(!session){show("loginPage");hide("dashboard");return}await checkSession()}
+async function login(){let email=$("loginEmail").value.trim(),password=$("loginPassword").value;if(!email||!password){msg("loginMsg","أدخل البريد الإلكتروني وكلمة المرور",true);return}let {error}=await db.auth.signInWithPassword({email,password});if(error){msg("loginMsg",error.message,true);return}await checkSession()}
+async function resetPassword(){let email=$("loginEmail").value.trim();if(!email){msg("loginMsg","أدخل البريد الإلكتروني أولاً",true);return}let {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});msg("loginMsg",error?error.message:"تم إرسال رابط استعادة كلمة المرور إلى بريدك الإلكتروني",!!error)}
+async function logout(){await db.auth.signOut();hide("dashboard");show("loginPage")}
+async function checkSession(){let {data:{session}}=await db.auth.getSession();if(!session){show("loginPage");hide("dashboard");return}let {data,error}=await db.from("notif_admins").select("user_id").eq("user_id",session.user.id).maybeSingle();if(error||!data){await db.auth.signOut();show("loginPage");hide("dashboard");msg("loginMsg","هذا الحساب غير مخول بدخول لوحة الإدارة",true);return}hide("loginPage");show("dashboard");await loadEmployees();await loadCirculars()}
+async function loadEmployeeReceipt(token){try{let r=await fetch(FUNCTION_URL+"?token="+encodeURIComponent(token),{method:"GET",headers:{apikey:SUPABASE_KEY}}),x=await r.json();if(!r.ok||!x.success)throw Error(x.error||"تعذر التحقق من الرابط");receiptData=x;localSignatureKey=makeEmployeeSignatureKey(x.employee);$("empName").textContent=x.employee?.full_name||"—";$("empJob").textContent=x.employee?.job_title||"—";$("cNumber").textContent=x.circular?.circular_number||"—";$("cDate").textContent=formatDate(x.circular?.circular_date);$("cSubject").textContent=x.circular?.subject||"—";$("cAuthority").textContent=x.circular?.issuing_authority||"—";$("cTarget").textContent=x.circular?.target||"—";$("cNote").textContent=x.circular?.recipient_note||"لا يوجد";$("cContent").textContent=x.circular?.content||"لا يوجد محتوى نصي";if(x.pdf_url){$("pdfLink").href=x.pdf_url;$("pdfFrame").src=x.pdf_url;show("pdfArea")}show("employeeDetails");if(x.acknowledged){$("alreadySigned").textContent="تم تسجيل إقرارك مسبقًا بتاريخ: "+formatDateTime(x.signed_at);show("alreadySigned");hide("signArea")}else{setupSignature()}$("employeeMessage").textContent="تم التحقق من الرابط بنجاح."}catch(e){msg("employeeMessage",e.message||"حدث خطأ أثناء فتح الرابط",true)}}
+function setupSignature(){canvas=$("signatureCanvas");ctx=canvas.getContext("2d");let resize=()=>{let r=canvas.getBoundingClientRect(),d=window.devicePixelRatio||1;canvas.width=r.width*d;canvas.height=r.height*d;ctx.setTransform(d,0,0,d,0,0);ctx.lineWidth=2.5;ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle="#153d2b"};resize();let point=e=>{let r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}};canvas.onpointerdown=e=>{drawing=true;hasSignature=true;canvas.setPointerCapture(e.pointerId);let p=point(e);ctx.beginPath();ctx.moveTo(p.x,p.y)};canvas.onpointermove=e=>{if(!drawing)return;let p=point(e);ctx.lineTo(p.x,p.y);ctx.stroke()};canvas.onpointerup=()=>drawing=false;canvas.onpointercancel=()=>drawing=false}
+function clearSignature(){if(!canvas)return;let r=canvas.getBoundingClientRect();ctx.clearRect(0,0,r.width,r.height);hasSignature=false}
+async function submitReceipt(){if(!receiptData||!currentReceiptToken)return;if(!hasSignature){alert("يرجى التوقيع داخل مربع التوقيع");return}if(!$("ackCheck").checked){alert("يرجى تحديد الإقرار بالاطلاع أولاً");return}let b=$("submitReceipt");b.disabled=true;b.textContent="جارٍ إرسال الإقرار...";try{let response=await fetch(FUNCTION_URL,{method:"POST",headers:{"Content-Type":"application/json",apikey:SUPABASE_KEY},body:JSON.stringify({token:currentReceiptToken,signature:canvas.toDataURL("image/png")})}),r=await response.json();if(!response.ok||!r.success)throw Error(r.error||"تعذر حفظ الإقرار");hide("signArea");$("alreadySigned").textContent="تم إرسال إقرارك وتوقيعك بنجاح. شكرًا لتعاونك.";show("alreadySigned")}catch(e){alert(e.message);b.disabled=false;b.textContent="إرسال الإقرار والتوقيع"}}
+async function loadEmployees(){let {data,error}=await db.from("notif_employees").select("id,full_name,job_title,specialization,phone,employment_status").order("full_name");if(error){msg("createMsg","تعذر تحميل الموظفين: "+error.message,true);return}employees=data||[];$("employeeCount").textContent=employees.length;renderEmployeeChoices();renderEmployeeAdmin()}
+function renderEmployeeChoices(){let q=($("employeeSearch").value||"").trim().toLowerCase(),a=employees.filter(e=>(e.full_name||"").toLowerCase().includes(q));$("employeeChoices").innerHTML=a.map(e=>`<label class="employee"><input type="checkbox" ${selectedEmployees.has(e.id)?"checked":""} onchange="toggleEmployee('${e.id}',this.checked)"><span>${escapeHTML(e.full_name)} <span class="small">${escapeHTML(e.job_title||"")}</span></span></label>`).join("")||'<p class="small">لا توجد نتائج مطابقة.</p>';$("selectedCount").textContent=selectedEmployees.size}
+function toggleEmployee(id,v){if(v)selectedEmployees.add(id);else selectedEmployees.delete(id);$("selectedCount").textContent=selectedEmployees.size}
+function selectAllEmployees(v){if(v)employees.forEach(e=>selectedEmployees.add(e.id));else selectedEmployees.clear();renderEmployeeChoices()}
+async function createCircular(){let number=$("circularNumber").value.trim(),date=$("circularDate").value,subject=$("subject").value.trim();if(!number||!date||!subject){msg("createMsg","يرجى إدخال رقم التعميم وتاريخه وموضوعه",true);return}if(!selectedEmployees.size){msg("createMsg","حدد موظفًا واحدًا على الأقل",true);return}let file=$("pdfFile").files[0];if(file&&file.type!=="application/pdf"){msg("createMsg","الملف المرفق يجب أن يكون PDF",true);return}msg("createMsg","جارٍ حفظ التعميم وإنشاء روابط الموظفين...");let path=null,cid=null;try{if(file){path="circulars/"+Date.now()+"-"+file.name.replace(/[^\w.\-]/g,"_");let {error}=await db.storage.from(BUCKET).upload(path,file,{contentType:"application/pdf",upsert:false});if(error)throw error}let {data:c,error}=await db.from("notif_circulars").insert({circular_number:number,circular_date:date,subject,issuing_authority:$("authority").value.trim(),recipient_note:$("recipientNote").value.trim(),content:$("content").value.trim(),target:$("target").value,pdf_path:path,status:"draft"}).select("id").single();if(error)throw error;cid=c.id;let rows=[...selectedEmployees].map(employee_id=>({circular_id:cid,employee_id,access_token:crypto.randomUUID(),status:"pending"}));let {error:re}=await db.from("notif_recipients").insert(rows);if(re)throw re;msg("createMsg","تم حفظ التعميم وإنشاء روابط خاصة للمستلمين. راجع التعميم في السجل ثم أتح الإرسال.");["circularNumber","subject","authority","recipientNote","content","pdfFile"].forEach(id=>$(id).value="");selectedEmployees.clear();renderEmployeeChoices();await loadCirculars()}catch(e){if(cid){await db.from("notif_recipients").delete().eq("circular_id",cid);await db.from("notif_circulars").delete().eq("id",cid)}msg("createMsg","تعذر إنشاء التعميم: "+(e.message||e),true)}}
+async function getCircularRecipients(id){let {data,error}=await db.from("notif_recipients").select("id,employee_id,access_token,status,sent_at,created_at").eq("circular_id",id);if(error)throw error;let a=data||[],ids=a.map(x=>x.id),receipts=[];if(ids.length){let {data:d,error:e}=await db.from("notif_receipts").select("id,recipient_id,signature_path,acknowledged,signed_at").in("recipient_id",ids);if(e)throw e;receipts=d||[]}return a.map(r=>({...r,receipt:receipts.find(x=>x.recipient_id===r.id)||null}))}
+async function loadCirculars(){$("circularList").textContent="جارٍ تحميل التعاميم...";let {data:cs,error}=await db.from("notif_circulars").select("*").order("created_at",{ascending:false});if(error){$("circularList").textContent="تعذر تحميل السجل: "+error.message;return}if(!cs?.length){$("circularList").textContent="لا توجد تعاميم مسجلة.";return}let hidden=getHiddenCircularIds(),visible=cs.filter(c=>showHiddenCirculars?hidden.includes(c.id):!hidden.includes(c.id)),{data:es}=await db.from("notif_employees").select("id,full_name,phone"),map=Object.fromEntries((es||[]).map(e=>[e.id,e]));if(!visible.length){$("circularList").innerHTML=showHiddenCirculars?'<p class="small">لا توجد تعاميم مخفية.</p>':'<p class="small">لا توجد تعاميم ظاهرة في السجل.</p>';return}let html="";for(let c of visible){let rs=[];try{rs=await getCircularRecipients(c.id)}catch(e){console.error(e)}let done=rs.filter(r=>r.receipt?.acknowledged).length,ih=hidden.includes(c.id);html+=`<div class="circular"><h4>التعميم رقم ${escapeHTML(c.circular_number)} - ${escapeHTML(c.subject)}</h4><p class="small">التاريخ: ${formatDate(c.circular_date)} | الحالة: ${escapeHTML(c.status||"—")}</p><p>عدد المستلمين: ${rs.length} | الإقرارات المسجلة: ${done}</p><div class="actions no-print">${!ih&&c.status!=="approved"?`<button class="gold" onclick="approveCircular('${c.id}')">إتاحة الإرسال</button>`:(!ih?"<span class='pill'>متاح للإرسال</span>":"")}${!ih?`<button class="light" onclick="showReport('${c.id}')">عرض تقرير الإقرارات</button>`:""}<button class="${ih?"gold":"danger"}" onclick="toggleCircularHidden('${c.id}',${ih})">${ih?"استعادة إلى السجل":"إخفاء من السجل"}</button></div>`;if(!ih){html+='<div class="tablewrap"><table><thead><tr><th>الموظف</th><th>حالة الإقرار</th><th>تاريخ الإقرار</th><th class="no-print">الإجراء</th></tr></thead><tbody>';for(let r of rs){let emp=map[r.employee_id]||{},signed=!!r.receipt?.acknowledged;html+=`<tr><td>${escapeHTML(emp.full_name||"موظف غير معروف")}</td><td>${signed?"<span class='pill'>تم الإقرار</span>":"<span class='pill'>بانتظار الإقرار</span>"}</td><td>${signed?formatDateTime(r.receipt.signed_at):"—"}</td><td class="no-print">${c.status==="approved"&&emp.phone?`<button class="light" onclick="sendWhatsApp('${escapeHTML(emp.phone)}','${r.access_token}')">إرسال واتساب</button>`:"—"}</td></tr>`}html+="</tbody></table></div>"}html+="</div>"}$("circularList").innerHTML=html}
+async function approveCircular(id){if(!confirm("هل تريد إتاحة إرسال روابط هذا التعميم إلى الموظفين؟"))return;let {error}=await db.from("notif_circulars").update({status:"approved"}).eq("id",id);if(error){alert("تعذر تحديث الحالة: "+error.message);return}await loadCirculars()}
+function sendWhatsApp(phone,token){let url=receiptUrl(token),message=`الموضوع: تبليغ تعميم وطلب الاطلاع والإقرار بالعلم
 
 السلام عليكم ورحمة الله وبركاته،
 نأمل منكم التكرم بالاطلاع على التعميم، والتفضل بتسجيل الإقرار بالعلم والاطلاع من خلال الرابط الموضح أدناه:
@@ -774,360 +166,29 @@ function sendWhatsApp(phone,token){
 ${url}
 
 شاكرين لكم حسن تعاونكم، ومقدّرين لكم جهودكم.
-وتقبلوا خالص التحية والتقدير.`;
- const number=normalizePhone(phone);
- if(!number){alert("رقم جوال الموظف غير صحيح");return}
- window.open("https://wa.me/"+number+"?text="+encodeURIComponent(message),"_blank");
-}
-
-/* جلب صور التوقيعات المسجلة في التخزين */
-async function getSignatureImageUrl(signaturePath){
- if(!signaturePath)return null;
- try{
-  const {data,error}=await db.storage.from(BUCKET).createSignedUrl(signaturePath,900);
-  if(error){console.warn("تعذر إنشاء رابط التوقيع:",error.message);return null}
-  return data?.signedUrl||null;
- }catch(error){
-  console.warn("تعذر الوصول إلى صورة التوقيع:",error);
-  return null;
- }
-}
-
-/* تهيئة لوح توقيع الاعتماد */
-function setupApprovalCanvas(role){
- const id=role==="preparer"?"preparerCanvas":"principalCanvas";
- const c=$(id);
- if(!c)return;
- const context=c.getContext("2d");
- approvalCanvases[role]=c;
- approvalContexts[role]=context;
- const ratio=window.devicePixelRatio||1;
- const rect=c.getBoundingClientRect();
- c.width=rect.width*ratio;
- c.height=rect.height*ratio;
- context.setTransform(ratio,0,0,ratio,0,0);
- context.lineWidth=2.5;
- context.lineCap="round";
- context.lineJoin="round";
- context.strokeStyle="#153d2b";
- let active=false;
- const point=e=>{
-  const r=c.getBoundingClientRect();
-  return {x:e.clientX-r.left,y:e.clientY-r.top};
- };
- c.onpointerdown=e=>{
-  active=true;
-  c.setPointerCapture(e.pointerId);
-  const p=point(e);
-  context.beginPath();
-  context.moveTo(p.x,p.y);
-  approvalHasSignature[role]=true;
- };
- c.onpointermove=e=>{
-  if(!active)return;
-  const p=point(e);
-  context.lineTo(p.x,p.y);
-  context.stroke();
- };
- c.onpointerup=()=>active=false;
- c.onpointercancel=()=>active=false;
-}
-
-function clearApprovalSignature(role){
- const c=approvalCanvases[role];
- const context=approvalContexts[role];
- if(!c||!context)return;
- context.clearRect(0,0,c.width,c.height);
- approvalHasSignature[role]=false;
-}
-
-function approvalKey(role){
- return "admin_approval:"+role;
-}
-
-async function saveApprovalSignature(role){
- const c=approvalCanvases[role];
- if(!c||!approvalHasSignature[role]){
-  alert("يرجى رسم التوقيع أولاً");
-  return;
- }
- try{
-  await saveLocalSignature(approvalKey(role),c.toDataURL("image/png"));
-  alert("تم حفظ التوقيع على جهاز المدير");
- }catch(e){alert("تعذر حفظ التوقيع: "+e.message)}
-}
-
-async function loadApprovalSignature(role){
- const c=approvalCanvases[role];
- const context=approvalContexts[role];
- if(!c||!context)return;
- try{
-  const dataUrl=await getLocalSignature(approvalKey(role));
-  if(!dataUrl){alert("لا يوجد توقيع محفوظ لهذا الاعتماد على هذا الجهاز");return}
-  const image=new Image();
-  image.onload=()=>{
-   const rect=c.getBoundingClientRect();
-   context.clearRect(0,0,rect.width,rect.height);
-   context.drawImage(image,0,0,rect.width,rect.height);
-   approvalHasSignature[role]=true;
-  };
-  image.onerror=()=>alert("تعذر قراءة صورة التوقيع");
-  image.src=dataUrl;
- }catch(e){alert("تعذر جلب التوقيع: "+e.message)}
-}
-
-async function getApprovalData(role){
- try{return await getLocalSignature(approvalKey(role))}
- catch(e){console.warn(e);return null}
-}
-
-/* عرض تقرير الإقرارات */
-async function showReport(circularId){
- const {data:c,error}=await db.from("notif_circulars")
-  .select("*").eq("id",circularId).single();
- if(error){alert(error.message);return}
-
- let recipients;
- try{recipients=await getCircularRecipients(circularId)}
- catch(error){alert("تعذر تحميل إقرارات الموظفين: "+error.message);return}
-
- const employeeIds=recipients.map(r=>r.employee_id);
- let emps=[];
- if(employeeIds.length){
-  const {data,error:empError}=await db.from("notif_employees")
-   .select("id,full_name,job_title").in("id",employeeIds);
-  if(empError){alert("تعذر تحميل أسماء الموظفين: "+empError.message);return}
-  emps=data||[];
- }
- const empMap=Object.fromEntries(emps.map(e=>[e.id,e]));
- const signed=recipients.filter(r=>r.receipt?.acknowledged).length;
- let rows=[];
-
- for(const r of recipients){
-  const emp=empMap[r.employee_id]||{};
-  let signatureCell="—";
-  if(r.receipt?.acknowledged&&r.receipt?.signature_path){
-   const imageUrl=await getSignatureImageUrl(r.receipt.signature_path);
-   signatureCell=imageUrl?
-    `<img class="report-signature" src="${escapeHTML(imageUrl)}" alt="توقيع الموظف">`:
-    "<span>تعذر عرض التوقيع</span>";
-  }else if(r.receipt?.acknowledged){
-   signatureCell="<span>لا توجد صورة</span>";
-  }
-  rows.push(`<tr>
-   <td>${escapeHTML(emp.full_name||"—")}</td>
-   <td>${escapeHTML(emp.job_title||"—")}</td>
-   <td>${r.receipt?.acknowledged?"تم الإقرار":"لم يتم الإقرار"}</td>
-   <td>${r.receipt?.signed_at?formatReportDateTime(r.receipt.signed_at):"—"}</td>
-   <td>${signatureCell}</td>
-  </tr>`);
- }
-
- /* توقيعات معد التقرير ومدير المدرسة */
- const preparerSignature=await getApprovalData("preparer");
- const principalSignature=await getApprovalData("principal");
-
- const approvals=`
-  <div class="report-approvals">
-   <div class="approval-box">
-    <h4>معد التقرير</h4>
-    <p>مساعد إداري</p>
-    <p><strong>خالد شاقي الرويلي</strong></p>
-    ${preparerSignature?
-     `<img class="approval-sign" src="${preparerSignature}" alt="توقيع معد التقرير">`:
-     '<p>التوقيع: __________________</p>'}
-   </div>
-   <div class="approval-box">
-    <h4>اعتماد مدير المدرسة</h4>
-    <p><strong>عويد عشبان الرويلي</strong></p>
-    ${principalSignature?
-     `<img class="approval-sign" src="${principalSignature}" alt="توقيع مدير المدرسة">`:
-     '<p>التوقيع: __________________</p>'}
-   </div>
-  </div>
- `;
-
- /* تقسيم التقرير: 22 موظفًا في الصفحة */
- const firstRows=rows.slice(0,22);
- const secondRows=rows.slice(22);
-
- const tableHeader=`
-  <div class="tablewrap">
-   <table>
-    <thead><tr>
-     <th style="width:22%">اسم الموظف</th>
-     <th style="width:18%">المسمى الوظيفي</th>
-     <th style="width:15%">حالة الإقرار</th>
-     <th style="width:25%">تاريخ الإقرار</th>
-     <th style="width:20%">التوقيع الإلكتروني</th>
-    </tr></thead><tbody>
- `;
-
- const tableEnd="</tbody></table></div>";
-
- const reportHeading=`
-  <div class="report-page-heading">
-   <h2>تقرير متابعة تبليغ تعميم</h2>
-   <p>وزارة التعليم - الإدارة العامة للتعليم بمنطقة الجوف<br>
-   مدرسة عبدالله بن مسعود الابتدائية</p>
-  </div>
-  <hr>
-  <div class="report-summary">
-   <span><strong>رقم التعميم:</strong> ${escapeHTML(c.circular_number)}</span>
-   <span><strong>التاريخ:</strong> ${formatReportDate(c.circular_date)}</span>
-   <span><strong>الموضوع:</strong> ${escapeHTML(c.subject)}</span>
-   <span><strong>الجهة المصدرة:</strong> ${escapeHTML(c.issuing_authority||"—")}</span>
-   <span><strong>إجمالي المستلمين:</strong> ${recipients.length}</span>
-   <span><strong>الإقرارات:</strong> ${signed}</span>
-   <span><strong>لم يقروا:</strong> ${recipients.length-signed}</span>
-  </div>
- `;
-
- let firstPage=`
-  <div class="report-page">
-   ${reportHeading}
-   ${tableHeader}${firstRows.join("")}${tableEnd}
-  </div>
- `;
-
- let secondPage="";
-
- if(secondRows.length){
-  secondPage=`
-   <div class="report-page">
-    <div class="report-page-subheading">
-     استكمال تقرير متابعة تبليغ التعميم
-     | رقم التعميم: ${escapeHTML(c.circular_number)}
-     | ${escapeHTML(c.subject)}
-    </div>
-    ${tableHeader}${secondRows.join("")}${tableEnd}
-    ${approvals}
-   </div>
-  `;
- }else{
-  firstPage=`
-   <div class="report-page">
-    ${reportHeading}
-    ${tableHeader}${firstRows.join("")}${tableEnd}
-    ${approvals}
-   </div>
-  `;
- }
-
- const reportContent=$("reportContent");
- reportContent.innerHTML=firstPage+secondPage;
- reportContent.classList.toggle("has-second-page",!!secondRows.length);
-
- show("reportSection");
-
- /* تهيئة لوحي توقيع الاعتماد */
- setupApprovalCanvas("preparer");
- setupApprovalCanvas("principal");
-
- $("reportSection").scrollIntoView({behavior:"smooth"});
-}
-
-/* انتظار تحميل الصور قبل الطباعة */
-async function printReport(){
- if(!$("reportContent").innerHTML.trim()){
-  alert("يرجى عرض تقرير التعميم أولاً");
-  return;
- }
- const images=Array.from($("reportContent").querySelectorAll("img"));
- await Promise.all(images.map(img=>{
-  if(img.complete&&img.naturalWidth>0)return Promise.resolve();
-  return new Promise(resolve=>{
-   const done=()=>resolve();
-   img.addEventListener("load",done,{once:true});
-   img.addEventListener("error",done,{once:true});
-   setTimeout(done,5000);
-  });
- }));
- window.print();
-}
-
-/* إدارة الموظفين */
-function renderEmployeeAdmin(){
- const list=$("employeeAdminList");
- if(!employees.length){list.textContent="لا يوجد موظفون في السجل";return}
- list.innerHTML=`
-  <div class="tablewrap"><table>
-   <thead><tr>
-    <th>اسم الموظف</th><th>المسمى</th><th>رقم الجوال</th><th>الإجراء</th>
-   </tr></thead>
-   <tbody>
-    ${employees.map(e=>`
-     <tr>
-      <td>${escapeHTML(e.full_name)}</td>
-      <td>${escapeHTML(e.job_title||"—")}</td>
-      <td>${escapeHTML(e.phone||"—")}</td>
-      <td>
-       <button class="light" onclick="editEmployee('${e.id}')">تعديل</button>
-       <button class="danger" onclick="deleteEmployee('${e.id}')">حذف</button>
-      </td>
-     </tr>`).join("")}
-   </tbody>
-  </table></div>
- `;
-}
-
-async function addEmployee(){
- const full_name=$("newEmpName").value.trim();
- if(!full_name){msg("employeeAdminMsg","أدخل اسم الموظف",true);return}
- const {error}=await db.from("notif_employees").insert({
-  full_name,
-  job_title:$("newEmpJob").value.trim(),
-  specialization:$("newEmpSpec").value.trim(),
-  phone:$("newEmpPhone").value.trim()
- });
- if(error){msg("employeeAdminMsg","تعذرت الإضافة: "+error.message,true);return}
- $("newEmpName").value="";
- $("newEmpJob").value="";
- $("newEmpSpec").value="";
- $("newEmpPhone").value="";
- msg("employeeAdminMsg","تمت إضافة الموظف بنجاح");
- await loadEmployees();
-}
-
-async function editEmployee(id){
- const e=employees.find(x=>x.id===id);
- if(!e)return;
- const name=prompt("اسم الموظف:",e.full_name);
- if(name===null)return;
- const job=prompt("المسمى الوظيفي:",e.job_title||"");
- if(job===null)return;
- const phone=prompt("رقم الجوال:",e.phone||"");
- if(phone===null)return;
- const {error}=await db.from("notif_employees").update({
-  full_name:name.trim(),job_title:job.trim(),phone:phone.trim()
- }).eq("id",id);
- if(error){alert("تعذر التعديل: "+error.message);return}
- await loadEmployees();
-}
-
-async function deleteEmployee(id){
- const e=employees.find(x=>x.id===id);
- if(!e)return;
- if(!confirm("هل تريد حذف الموظف "+e.full_name+"؟ تأكد من عدم ارتباطه بتعاميم سابقة."))return;
- const {error}=await db.from("notif_employees").delete().eq("id",id);
- if(error){
-  alert("تعذر الحذف. قد يكون الموظف مرتبطًا بتعاميم سابقة.\n"+error.message);
-  return;
- }
- await loadEmployees();
-}
-
-/* متابعة حالة تسجيل الدخول */
-db.auth.onAuthStateChange((event,session)=>{
- if(event==="SIGNED_OUT"&&!new URLSearchParams(location.search).has("receipt")){
-  hide("dashboard");
-  show("loginPage");
- }
-});
-
-setInitialDate();
-startApp();
-
+وتقبلوا خالص التحية والتقدير.`;let n=normalizePhone(phone);if(!n){alert("رقم جوال الموظف غير صحيح");return}window.open("https://wa.me/"+n+"?text="+encodeURIComponent(message),"_blank")}
+async function getSignatureImageUrl(path){if(!path)return null;try{let {data,error}=await db.storage.from(BUCKET).createSignedUrl(path,900);if(error){console.warn(error.message);return null}return data?.signedUrl||null}catch(e){console.warn(e);return null}}
+function setupApprovalCanvas(role){let c=$(role==="preparer"?"preparerCanvas":"principalCanvas");if(!c)return;let x=c.getContext("2d");approvalCanvases[role]=c;approvalContexts[role]=x;let ratio=window.devicePixelRatio||1,r=c.getBoundingClientRect();c.width=r.width*ratio;c.height=r.height*ratio;x.setTransform(ratio,0,0,ratio,0,0);x.lineWidth=2.5;x.lineCap="round";x.lineJoin="round";x.strokeStyle="#153d2b";let active=false,point=e=>{let b=c.getBoundingClientRect();return{x:e.clientX-b.left,y:e.clientY-b.top}};c.onpointerdown=e=>{active=true;c.setPointerCapture(e.pointerId);let p=point(e);x.beginPath();x.moveTo(p.x,p.y);approvalHasSignature[role]=true};c.onpointermove=e=>{if(!active)return;let p=point(e);x.lineTo(p.x,p.y);x.stroke()};c.onpointerup=()=>active=false;c.onpointercancel=()=>active=false}
+function approvalKey(role){return"admin_approval:"+role}
+function clearApprovalSignature(role){let c=approvalCanvases[role],x=approvalContexts[role];if(!c||!x)return;let r=c.getBoundingClientRect();x.clearRect(0,0,r.width,r.height);approvalHasSignature[role]=false}
+async function saveApprovalSignature(role){let c=approvalCanvases[role];if(!c||!approvalHasSignature[role]){alert("يرجى رسم التوقيع أو استيراد صورة أولاً");return}try{await saveLocalSignature(approvalKey(role),c.toDataURL("image/png"));alert("تم حفظ التوقيع على جهاز المدير");if(currentReportCircularId)await showReport(currentReportCircularId,false)}catch(e){alert("تعذر حفظ التوقيع: "+e.message)}}
+async function loadApprovalSignature(role,silent=false){let c=approvalCanvases[role],x=approvalContexts[role];if(!c||!x)return;try{let d=await getLocalSignature(approvalKey(role));if(!d){if(!silent)alert("لا يوجد توقيع محفوظ لهذا الاعتماد على هذا الجهاز");return}await loadDataToCanvas(d,c,x);approvalHasSignature[role]=true}catch(e){if(!silent)alert(e.message)}}
+async function importApprovalSignature(ev,role){let f=ev.target.files?.[0];ev.target.value="";if(!f)return;if(!f.type.startsWith("image/")){alert("اختر صورة توقيع");return}try{let d=await fileToDataURL(f),c=approvalCanvases[role],x=approvalContexts[role];await loadDataToCanvas(d,c,x);approvalHasSignature[role]=true;await saveLocalSignature(approvalKey(role),c.toDataURL("image/png"));alert("تم استيراد التوقيع وحفظه. تم تحديث التقرير.");if(currentReportCircularId)await showReport(currentReportCircularId,false)}catch(e){alert(e.message)}}
+async function getApprovalData(role){try{return await getLocalSignature(approvalKey(role))}catch(e){console.warn(e);return null}}
+function closeReport(){hide("reportSection");currentReportCircularId=""}
+async function showReport(circularId,scroll=true){let {data:c,error}=await db.from("notif_circulars").select("*").eq("id",circularId).single();if(error){alert(error.message);return}let recipients;try{recipients=await getCircularRecipients(circularId)}catch(e){alert("تعذر تحميل إقرارات الموظفين: "+e.message);return}let ids=recipients.map(r=>r.employee_id),emps=[];if(ids.length){let {data,error}=await db.from("notif_employees").select("id,full_name,job_title").in("id",ids);if(error){alert("تعذر تحميل أسماء الموظفين: "+error.message);return}emps=data||[]}let em=Object.fromEntries(emps.map(e=>[e.id,e])),signed=recipients.filter(r=>r.receipt?.acknowledged).length,rows=[];for(let r of recipients){let e=em[r.employee_id]||{},sig="—";if(r.receipt?.acknowledged&&r.receipt?.signature_path){let u=await getSignatureImageUrl(r.receipt.signature_path);sig=u?`<img class="report-signature" src="${escapeHTML(u)}" alt="توقيع الموظف">`:"<span>تعذر عرض التوقيع</span>"}else if(r.receipt?.acknowledged)sig="<span>لا توجد صورة</span>";rows.push(`<tr><td>${escapeHTML(e.full_name||"—")}</td><td>${escapeHTML(e.job_title||"—")}</td><td>${r.receipt?.acknowledged?"تم الإقرار":"لم يتم الإقرار"}</td><td>${r.receipt?.signed_at?formatReportDateTime(r.receipt.signed_at):"—"}</td><td>${sig}</td></tr>`)}
+let prep=await getApprovalData("preparer"),principal=await getApprovalData("principal"),approvals=`<div class="report-approvals"><div class="approval-box"><h4>معد التقرير</h4><p>مساعد إداري</p><p><strong>خالد شاقي الرويلي</strong></p>${prep?`<img class="approval-sign" src="${prep}" alt="توقيع معد التقرير">`:""}</div><div class="approval-box"><h4>اعتماد مدير المدرسة</h4><p><strong>عويد عشبان الرويلي</strong></p>${principal?`<img class="approval-sign" src="${principal}" alt="توقيع مدير المدرسة">`:""}</div></div>`;
+let first=rows.slice(0,22),second=rows.slice(22),th=`<div class="tablewrap"><table><thead><tr><th style="width:22%">اسم الموظف</th><th style="width:18%">المسمى الوظيفي</th><th style="width:15%">حالة الإقرار</th><th style="width:25%">تاريخ الإقرار</th><th style="width:20%">التوقيع الإلكتروني</th></tr></thead><tbody>`,end="</tbody></table></div>";
+let heading=`<div class="report-page-heading"><h2>تقرير متابعة تبليغ تعميم</h2><p>وزارة التعليم - الإدارة العامة للتعليم بمنطقة الجوف<br>مدرسة عبدالله بن مسعود الابتدائية</p></div><hr><div class="report-summary"><span><strong>رقم التعميم:</strong> ${escapeHTML(c.circular_number)}</span><span><strong>التاريخ:</strong> ${formatReportDate(c.circular_date)}</span><span><strong>الموضوع:</strong> ${escapeHTML(c.subject)}</span><span><strong>الجهة المصدرة:</strong> ${escapeHTML(c.issuing_authority||"—")}</span><span><strong>إجمالي المستلمين:</strong> ${recipients.length}</span><span><strong>الإقرارات:</strong> ${signed}</span><span><strong>لم يقروا:</strong> ${recipients.length-signed}</span></div>`;
+let p1=`<div class="report-page">${heading}${th}${first.join("")}${end}${second.length?"":approvals}</div>`,p2=second.length?`<div class="report-page"><div class="report-page-subheading">استكمال تقرير متابعة تبليغ التعميم | رقم التعميم: ${escapeHTML(c.circular_number)} | ${escapeHTML(c.subject)}</div>${th}${second.join("")}${end}${approvals}</div>`:"";
+$("reportContent").innerHTML=p1+p2;$("reportContent").classList.toggle("has-second-page",!!second.length);currentReportCircularId=circularId;show("reportSection");setupApprovalCanvas("preparer");setupApprovalCanvas("principal");await loadApprovalSignature("preparer",true);await loadApprovalSignature("principal",true);if(scroll)$("reportSection").scrollIntoView({behavior:"smooth"})}
+async function printReport(){if(!$("reportContent").innerHTML.trim()){alert("يرجى عرض تقرير التعميم أولاً");return}let imgs=[...$("reportContent").querySelectorAll("img")];await Promise.all(imgs.map(i=>i.complete&&i.naturalWidth?Promise.resolve():new Promise(r=>{i.addEventListener("load",r,{once:true});i.addEventListener("error",r,{once:true});setTimeout(r,5000)})));window.print()}
+function renderEmployeeAdmin(){let l=$("employeeAdminList");if(!employees.length){l.textContent="لا يوجد موظفون في السجل";return}l.innerHTML=`<div class="tablewrap"><table><thead><tr><th>اسم الموظف</th><th>المسمى</th><th>رقم الجوال</th><th>الإجراء</th></tr></thead><tbody>${employees.map(e=>`<tr><td>${escapeHTML(e.full_name)}</td><td>${escapeHTML(e.job_title||"—")}</td><td>${escapeHTML(e.phone||"—")}</td><td><button class="light" onclick="editEmployee('${e.id}')">تعديل</button><button class="danger" onclick="deleteEmployee('${e.id}')">حذف</button></td></tr>`).join("")}</tbody></table></div>`}
+async function addEmployee(){let full_name=$("newEmpName").value.trim();if(!full_name){msg("employeeAdminMsg","أدخل اسم الموظف",true);return}let {error}=await db.from("notif_employees").insert({full_name,job_title:$("newEmpJob").value.trim(),specialization:$("newEmpSpec").value.trim(),phone:$("newEmpPhone").value.trim()});if(error){msg("employeeAdminMsg","تعذرت الإضافة: "+error.message,true);return}["newEmpName","newEmpJob","newEmpSpec","newEmpPhone"].forEach(id=>$(id).value="");msg("employeeAdminMsg","تمت إضافة الموظف بنجاح");await loadEmployees()}
+async function editEmployee(id){let e=employees.find(x=>x.id===id);if(!e)return;let name=prompt("اسم الموظف:",e.full_name);if(name===null)return;let job=prompt("المسمى الوظيفي:",e.job_title||"");if(job===null)return;let phone=prompt("رقم الجوال:",e.phone||"");if(phone===null)return;let {error}=await db.from("notif_employees").update({full_name:name.trim(),job_title:job.trim(),phone:phone.trim()}).eq("id",id);if(error){alert("تعذر التعديل: "+error.message);return}await loadEmployees()}
+async function deleteEmployee(id){let e=employees.find(x=>x.id===id);if(!e)return;if(!confirm("هل تريد حذف الموظف "+e.full_name+"؟ تأكد من عدم ارتباطه بتعاميم سابقة."))return;let {error}=await db.from("notif_employees").delete().eq("id",id);if(error){alert("تعذر الحذف. قد يكون الموظف مرتبطًا بتعاميم سابقة.\n"+error.message);return}await loadEmployees()}
+db.auth.onAuthStateChange((event)=>{if(event==="SIGNED_OUT"&&!new URLSearchParams(location.search).has("receipt")){hide("dashboard");show("loginPage")}});
+setInitialDate();startApp();
 </script>
 </body>
 </html>
