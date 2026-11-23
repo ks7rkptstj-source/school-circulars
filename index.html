@@ -3,45 +3,206 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>منصة تبليغات التعاميم - مدرسة عبدالله بن مسعود</title>
+<title>منصة التعاميم والتبليغات - مدرسة عبدالله بن مسعود</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-:root{--green:#176b45;--green2:#21865a;--gold:#c6a45b;--bg:#f3f6f3;--ink:#24352c;--red:#b42318}
+:root{
+ --green:#176b45;
+ --green2:#21865a;
+ --blue:#267bb5;
+ --blue2:#175b91;
+ --gold:#c6a45b;
+ --bg:#f3f6f3;
+ --ink:#24352c;
+ --red:#b42318
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);font-family:Tahoma,Arial,sans-serif;color:var(--ink);line-height:1.7}
-header{background:linear-gradient(120deg,#145b3b,#21865a);color:white;text-align:center;padding:22px 12px;border-bottom:5px solid var(--gold)}
-header h2{margin:3px;font-size:19px}
-header p{margin:2px;font-size:14px}
+body{
+ margin:0;
+ background:var(--bg);
+ font-family:Tahoma,Arial,sans-serif;
+ color:var(--ink);
+ line-height:1.7
+}
+
+/* الترويسة المعتمدة */
+.site-header{
+ background:linear-gradient(115deg,#145b3b 0%,#21865a 48%,#267bb5 100%);
+ color:#fff;
+ padding:15px 14px 17px;
+ border-bottom:4px solid var(--gold);
+ box-shadow:0 3px 12px #00000012;
+ text-align:center
+}
+.header-inner{
+ max-width:1100px;
+ margin:auto
+}
+.header-ministry{
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:5px 18px;
+ padding-bottom:10px;
+ border-bottom:1px solid #ffffff45;
+ font-size:13px;
+ color:#f2fff7
+}
+.header-ministry span{
+ font-weight:bold
+}
+.header-ministry i{
+ font-style:normal;
+ opacity:.95
+}
+.header-brand{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:13px;
+ padding-top:12px
+}
+.header-icon{
+ width:55px;
+ height:55px;
+ min-width:55px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ border-radius:16px;
+ background:#ffffff20;
+ border:1px solid #ffffff65;
+ box-shadow:0 3px 10px #00000018
+}
+.header-icon svg{
+ width:32px;
+ height:32px;
+ display:block
+}
+.header-brand-text h1{
+ margin:0;
+ font-size:23px;
+ font-weight:bold;
+ line-height:1.5;
+ color:#fff
+}
+.header-brand-text p{
+ margin:1px 0 0;
+ font-size:16px;
+ color:#f3fff8;
+ font-weight:bold
+}
 .container{max-width:1100px;margin:20px auto;padding:0 12px}
-.card{background:white;border-radius:13px;padding:18px;margin-bottom:16px;box-shadow:0 3px 12px #0000000c;border:1px solid #e5ebe6}
-h3{color:var(--green);margin:0 0 14px;border-bottom:1px solid #e7eee8;padding-bottom:9px}
+.card{
+ background:white;
+ border-radius:13px;
+ padding:18px;
+ margin-bottom:16px;
+ box-shadow:0 3px 12px #0000000c;
+ border:1px solid #e5ebe6
+}
+h3{
+ color:var(--green);
+ margin:0 0 14px;
+ border-bottom:1px solid #e7eee8;
+ padding-bottom:9px
+}
 label{display:block;font-weight:bold;margin:9px 0 4px}
-input,textarea,select{width:100%;padding:11px;border:1px solid #ccd8cf;border-radius:8px;font:inherit;background:white}
+input,textarea,select{
+ width:100%;
+ padding:11px;
+ border:1px solid #ccd8cf;
+ border-radius:8px;
+ font:inherit;
+ background:white
+}
 textarea{min-height:85px;resize:vertical}
-button{border:0;border-radius:8px;padding:10px 15px;background:var(--green);color:white;font:inherit;cursor:pointer;margin:4px 2px}
+button{
+ border:0;
+ border-radius:8px;
+ padding:10px 15px;
+ background:var(--green);
+ color:white;
+ font:inherit;
+ cursor:pointer;
+ margin:4px 2px
+}
 button.secondary{background:#64756a}
 button.gold{background:#a77d2c}
 button.danger{background:#b42318}
-button.light{background:#eaf2ec;color:var(--green);border:1px solid #cbdccf}
+button.light{
+ background:#eaf2ec;
+ color:var(--green);
+ border:1px solid #cbdccf
+}
 button:disabled{opacity:.5;cursor:not-allowed}
 .row{display:flex;gap:12px;flex-wrap:wrap}
 .col{flex:1;min-width:220px}
 .hidden{display:none!important}
-.msg{padding:10px;border-radius:8px;margin:10px 0;background:#edf5ee;color:#176b45}
+.msg{
+ padding:10px;
+ border-radius:8px;
+ margin:10px 0;
+ background:#edf5ee;
+ color:#176b45
+}
 .msg.error{background:#fff0ef;color:#a51e18}
 .small{font-size:13px;color:#637168}
-.employee{border:1px solid #e2e9e3;padding:10px;border-radius:8px;margin:7px 0;display:flex;gap:8px;align-items:center}
+.employee{
+ border:1px solid #e2e9e3;
+ padding:10px;
+ border-radius:8px;
+ margin:7px 0;
+ display:flex;
+ gap:8px;
+ align-items:center
+}
 .employee input{width:auto}
-.pill{display:inline-block;padding:3px 9px;border-radius:20px;background:#edf4ee;color:#176b45;font-size:12px}
+.pill{
+ display:inline-block;
+ padding:3px 9px;
+ border-radius:20px;
+ background:#edf4ee;
+ color:#176b45;
+ font-size:12px
+}
 table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
-th,td{border:1px solid #dce5dd;padding:8px;text-align:right;vertical-align:middle}
+th,td{
+ border:1px solid #dce5dd;
+ padding:8px;
+ text-align:right;
+ vertical-align:middle
+}
 th{background:#eaf2ec;color:#155c3c}
 .tablewrap{overflow-x:auto}
-.signature{border:2px dashed #9eafa2;border-radius:9px;background:#fff;width:100%;height:210px;touch-action:none}
-.report-signature{display:block;max-width:120px;max-height:65px;width:auto;height:auto;object-fit:contain;margin:auto}
+.signature{
+ border:2px dashed #9eafa2;
+ border-radius:9px;
+ background:#fff;
+ width:100%;
+ height:210px;
+ touch-action:none
+}
+.report-signature{
+ display:block;
+ max-width:120px;
+ max-height:65px;
+ width:auto;
+ height:auto;
+ object-fit:contain;
+ margin:auto
+}
 footer{text-align:center;color:#66766b;padding:18px;font-size:13px}
 .actions,.signature-tools{display:flex;gap:5px;flex-wrap:wrap;margin:6px 0}
-.circular{border:1px solid #dce6dd;padding:13px;border-radius:10px;margin:10px 0;background:#fff}
+.circular{
+ border:1px solid #dce6dd;
+ padding:13px;
+ border-radius:10px;
+ margin:10px 0;
+ background:#fff
+}
 .circular h4{margin:0;color:#176b45}
 .pdfbox{width:100%;height:520px;border:1px solid #ccd8cf;border-radius:8px}
 .signature-tools button{font-size:13px}
@@ -91,17 +252,88 @@ footer{text-align:center;color:#66766b;padding:18px;font-size:13px}
  display:inline-block;
  vertical-align:middle
 }
-.approval-editor{border:1px solid #dce5dd;border-radius:9px;padding:12px;margin:12px 0;background:#f9fbf9}
+.approval-editor{
+ border:1px solid #dce5dd;
+ border-radius:9px;
+ padding:12px;
+ margin:12px 0;
+ background:#f9fbf9
+}
 .approval-editor canvas{height:110px}
 .report-page{width:100%}
-.report-page-heading{text-align:center;margin-bottom:5px}
-.report-page-heading h2{color:#155c3c;margin:0 0 4px;font-size:17px}
-.report-page-heading p{margin:2px 0;font-size:10px}
-.report-summary{display:flex;flex-wrap:wrap;gap:5px 16px;align-items:center;margin:5px 0;padding:5px 8px;background:#f4f7f4;border:1px solid #dce5dd;border-radius:5px}
+
+/* ترويسة التقرير المطبوعة */
+.report-page-heading{
+ text-align:center;
+ margin:0 0 5px;
+ padding:5px 0 7px;
+ border-bottom:2px solid #21865a
+}
+.report-heading-ministry{
+ font-size:9px;
+ color:#315b47;
+ margin-bottom:5px
+}
+.report-heading-brand{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:8px;
+ margin:3px auto
+}
+.report-heading-icon{
+ width:31px;
+ height:31px;
+ min-width:31px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ border-radius:8px;
+ background:linear-gradient(130deg,#176b45,#267bb5);
+ color:#fff;
+ font-size:18px
+}
+.report-heading-text h2{
+ color:#176b45;
+ margin:0;
+ font-size:16px;
+ line-height:1.4
+}
+.report-heading-text p{
+ margin:1px 0 0;
+ color:#267bb5;
+ font-size:11px;
+ font-weight:bold
+}
+.report-summary{
+ display:flex;
+ flex-wrap:wrap;
+ gap:5px 16px;
+ align-items:center;
+ margin:5px 0;
+ padding:5px 8px;
+ background:#f4f7f4;
+ border:1px solid #dce5dd;
+ border-radius:5px
+}
 .report-summary span{font-size:10px}
-.report-page-subheading{text-align:center;font-size:11px;color:#176b45;margin:0 0 5px;padding-bottom:4px;border-bottom:1px solid #ddd}
+.report-page-subheading{
+ text-align:center;
+ font-size:11px;
+ color:#176b45;
+ margin:0 0 5px;
+ padding-bottom:4px;
+ border-bottom:1px solid #ddd
+}
 details.employee-admin{padding:0;overflow:hidden}
-details.employee-admin>summary{cursor:pointer;list-style:none;padding:16px 18px;color:var(--green);font-weight:bold;font-size:17px}
+details.employee-admin>summary{
+ cursor:pointer;
+ list-style:none;
+ padding:16px 18px;
+ color:var(--green);
+ font-weight:bold;
+ font-size:17px
+}
 details.employee-admin>summary::-webkit-details-marker{display:none}
 details.employee-admin>summary:after{content:"＋";float:left;color:var(--gold)}
 details.employee-admin[open]>summary:after{content:"－"}
@@ -110,7 +342,12 @@ details.employee-admin .details-body{padding:0 18px 18px}
 @media(max-width:600px){
  .container{margin:10px auto}
  .card{padding:13px}
- header h2{font-size:17px}
+ .header-ministry{font-size:11px;gap:3px 10px}
+ .header-brand{gap:9px;padding-top:10px}
+ .header-icon{width:47px;height:47px;min-width:47px;border-radius:13px}
+ .header-icon svg{width:27px;height:27px}
+ .header-brand-text h1{font-size:18px}
+ .header-brand-text p{font-size:14px}
  .pdfbox{height:420px}
  table{font-size:12px}
  .report-approvals{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
@@ -175,6 +412,35 @@ details.employee-admin .details-body{padding:0 18px 18px}
  #reportContent .report-page:last-child{
   break-after:auto!important;
   page-break-after:auto!important
+ }
+ #reportContent .report-page-heading{
+  margin:0 0 3px!important;
+  padding:2px 0 4px!important;
+  border-bottom:2px solid #21865a!important;
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important
+ }
+ #reportContent .report-heading-ministry{
+  font-size:8px!important;
+  margin-bottom:2px!important
+ }
+ #reportContent .report-heading-icon{
+  width:24px!important;
+  height:24px!important;
+  min-width:24px!important;
+  font-size:14px!important;
+  border-radius:5px!important;
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important
+ }
+ #reportContent .report-heading-text h2{
+  font-size:13px!important;
+  margin:0!important;
+  text-align:center!important
+ }
+ #reportContent .report-heading-text p{
+  font-size:9px!important;
+  margin:0!important
  }
  #reportContent h2{
   font-size:14px!important;
@@ -269,13 +535,34 @@ details.employee-admin .details-body{padding:0 18px 18px}
 }
 </style>
 </head>
+
 <body>
 
-<header>
-<p>وزارة التعليم</p>
-<p>الإدارة العامة للتعليم بمنطقة الجوف</p>
-<h2>مدرسة عبدالله بن مسعود الابتدائية</h2>
-<p>منصة تبليغات التعاميم والإقرار بالعلم</p>
+<!-- الترويسة الرئيسية المعتمدة -->
+<header class="site-header">
+ <div class="header-inner">
+
+  <div class="header-ministry">
+   <span>وزارة التعليم</span>
+   <i>الإدارة العامة للتعليم بمنطقة الجوف</i>
+  </div>
+
+  <div class="header-brand">
+   <div class="header-icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+     <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+     <path d="M10 21h4"/>
+     <path d="M19 3l1.5-1.5M5 3L3.5 1.5"/>
+    </svg>
+   </div>
+
+   <div class="header-brand-text">
+    <h1>منصة التعاميم والتبليغات</h1>
+    <p>مدرسة عبدالله بن مسعود</p>
+   </div>
+  </div>
+
+ </div>
 </header>
 
 <div class="container">
@@ -532,14 +819,25 @@ function formatReportDateTime(v){
  return formatDateTime(v)
 }
 
-function setInitialDate(){if($("circularDate"))$("circularDate").value=new Date().toISOString().slice(0,10)}
-function normalizePhone(phone){let p=String(phone||"").replace(/\D/g,"");if(p.startsWith("05"))p="966"+p.slice(1);else if(p.startsWith("5"))p="966"+p;return p}
-function receiptUrl(token){return location.origin+location.pathname+"?receipt="+encodeURIComponent(token)}
+function setInitialDate(){
+ if($("circularDate"))$("circularDate").value=new Date().toISOString().slice(0,10)
+}
+function normalizePhone(phone){
+ let p=String(phone||"").replace(/\D/g,"");
+ if(p.startsWith("05"))p="966"+p.slice(1);
+ else if(p.startsWith("5"))p="966"+p;
+ return p
+}
+function receiptUrl(token){
+ return location.origin+location.pathname+"?receipt="+encodeURIComponent(token)
+}
 
 function openSignatureDB(){
  return new Promise((resolve,reject)=>{
   let r=indexedDB.open("AbdullahSchoolSignatures",1);
-  r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains("signatures"))r.result.createObjectStore("signatures")};
+  r.onupgradeneeded=()=>{
+   if(!r.result.objectStoreNames.contains("signatures"))r.result.createObjectStore("signatures")
+  };
   r.onsuccess=()=>resolve(r.result);
   r.onerror=()=>reject(r.error)
  })
@@ -564,7 +862,9 @@ async function getLocalSignature(key){
  })
 }
 
-function makeEmployeeSignatureKey(e){return"employee:"+String(e?.full_name||"").trim().replace(/\s+/g," ")+":"+String(e?.job_title||"").trim().replace(/\s+/g," ")}
+function makeEmployeeSignatureKey(e){
+ return"employee:"+String(e?.full_name||"").trim().replace(/\s+/g," ")+":"+String(e?.job_title||"").trim().replace(/\s+/g," ")
+}
 
 function loadDataToCanvas(data,c,context){
  return new Promise((resolve,reject)=>{
@@ -621,14 +921,26 @@ async function loadEmployeeSignature(){
  }catch(e){alert(e.message)}
 }
 
-function getHiddenCircularIds(){try{return JSON.parse(localStorage.getItem(HIDDEN_KEY)||"[]")}catch(e){return[]}}
-function setHiddenCircularIds(ids){localStorage.setItem(HIDDEN_KEY,JSON.stringify([...new Set(ids)]))}
-function hideCircularLocally(id){let a=getHiddenCircularIds();if(!a.includes(id))a.push(id);setHiddenCircularIds(a)}
-function restoreCircularLocally(id){setHiddenCircularIds(getHiddenCircularIds().filter(x=>x!==id))}
+function getHiddenCircularIds(){
+ try{return JSON.parse(localStorage.getItem(HIDDEN_KEY)||"[]")}
+ catch(e){return[]}
+}
+function setHiddenCircularIds(ids){
+ localStorage.setItem(HIDDEN_KEY,JSON.stringify([...new Set(ids)]))
+}
+function hideCircularLocally(id){
+ let a=getHiddenCircularIds();
+ if(!a.includes(id))a.push(id);
+ setHiddenCircularIds(a)
+}
+function restoreCircularLocally(id){
+ setHiddenCircularIds(getHiddenCircularIds().filter(x=>x!==id))
+}
 
 async function toggleCircularHidden(id,isHidden){
  if(!confirm("هل تريد "+(isHidden?"استعادة":"إخفاء")+" هذا التعميم من سجل هذا الجهاز؟ لن يتم حذف أي بيانات أو توقيعات."))return;
- if(isHidden)restoreCircularLocally(id);else hideCircularLocally(id);
+ if(isHidden)restoreCircularLocally(id);
+ else hideCircularLocally(id);
  await loadCirculars()
 }
 
@@ -667,19 +979,25 @@ async function resetPassword(){
  msg("loginMsg",error?error.message:"تم إرسال رابط استعادة كلمة المرور إلى بريدك الإلكتروني",!!error)
 }
 
-async function logout(){await db.auth.signOut();hide("dashboard");show("loginPage")}
+async function logout(){
+ await db.auth.signOut();
+ hide("dashboard");
+ show("loginPage")
+}
 
 async function checkSession(){
  let {data:{session}}=await db.auth.getSession();
  if(!session){show("loginPage");hide("dashboard");return}
  let {data,error}=await db.from("notif_admins").select("user_id").eq("user_id",session.user.id).maybeSingle();
  if(error||!data){
-  await db.auth.signOut();show("loginPage");hide("dashboard");
+  await db.auth.signOut();
+  show("loginPage");hide("dashboard");
   msg("loginMsg","هذا الحساب غير مخول بدخول لوحة الإدارة",true);
   return
  }
  hide("loginPage");show("dashboard");
- await loadEmployees();await loadCirculars()
+ await loadEmployees();
+ await loadCirculars()
 }
 
 async function loadEmployeeReceipt(token){
@@ -697,14 +1015,22 @@ async function loadEmployeeReceipt(token){
   $("cTarget").textContent=x.circular?.target||"—";
   $("cNote").textContent=x.circular?.recipient_note||"لا يوجد";
   $("cContent").textContent=x.circular?.content||"لا يوجد محتوى نصي";
-  if(x.pdf_url){$("pdfLink").href=x.pdf_url;$("pdfFrame").src=x.pdf_url;show("pdfArea")}
+  if(x.pdf_url){
+   $("pdfLink").href=x.pdf_url;
+   $("pdfFrame").src=x.pdf_url;
+   show("pdfArea")
+  }
   show("employeeDetails");
   if(x.acknowledged){
    $("alreadySigned").textContent="تم تسجيل إقرارك مسبقًا بتاريخ: "+formatDateTime(x.signed_at);
    show("alreadySigned");hide("signArea")
-  }else{setupSignature()}
+  }else{
+   setupSignature()
+  }
   $("employeeMessage").textContent="تم التحقق من الرابط بنجاح."
- }catch(e){msg("employeeMessage",e.message||"حدث خطأ أثناء فتح الرابط",true)}
+ }catch(e){
+  msg("employeeMessage",e.message||"حدث خطأ أثناء فتح الرابط",true)
+ }
 }
 
 function setupSignature(){
@@ -717,12 +1043,18 @@ function setupSignature(){
   ctx.lineWidth=2.5;ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle="#153d2b"
  };
  resize();
- let point=e=>{let r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}};
+ let point=e=>{
+  let r=canvas.getBoundingClientRect();
+  return{x:e.clientX-r.left,y:e.clientY-r.top}
+ };
  canvas.onpointerdown=e=>{
   drawing=true;hasSignature=true;canvas.setPointerCapture(e.pointerId);
   let p=point(e);ctx.beginPath();ctx.moveTo(p.x,p.y)
  };
- canvas.onpointermove=e=>{if(!drawing)return;let p=point(e);ctx.lineTo(p.x,p.y);ctx.stroke()};
+ canvas.onpointermove=e=>{
+  if(!drawing)return;
+  let p=point(e);ctx.lineTo(p.x,p.y);ctx.stroke()
+ };
  canvas.onpointerup=()=>drawing=false;
  canvas.onpointercancel=()=>drawing=false
 }
@@ -762,7 +1094,8 @@ async function loadEmployees(){
  if(error){msg("createMsg","تعذر تحميل الموظفين: "+error.message,true);return}
  employees=data||[];
  $("employeeCount").textContent=employees.length;
- renderEmployeeChoices();renderEmployeeAdmin()
+ renderEmployeeChoices();
+ renderEmployeeAdmin()
 }
 
 function renderEmployeeChoices(){
@@ -771,8 +1104,16 @@ function renderEmployeeChoices(){
  $("selectedCount").textContent=selectedEmployees.size
 }
 
-function toggleEmployee(id,v){if(v)selectedEmployees.add(id);else selectedEmployees.delete(id);$("selectedCount").textContent=selectedEmployees.size}
-function selectAllEmployees(v){if(v)employees.forEach(e=>selectedEmployees.add(e.id));else selectedEmployees.clear();renderEmployeeChoices()}
+function toggleEmployee(id,v){
+ if(v)selectedEmployees.add(id);
+ else selectedEmployees.delete(id);
+ $("selectedCount").textContent=selectedEmployees.size
+}
+function selectAllEmployees(v){
+ if(v)employees.forEach(e=>selectedEmployees.add(e.id));
+ else selectedEmployees.clear();
+ renderEmployeeChoices()
+}
 
 async function createCircular(){
  let number=$("circularNumber").value.trim(),date=$("circularDate").value,subject=$("subject").value.trim();
@@ -801,7 +1142,9 @@ async function createCircular(){
   if(re)throw re;
   msg("createMsg","تم حفظ التعميم وإنشاء روابط خاصة للمستلمين. راجع التعميم في السجل ثم أتح الإرسال.");
   ["circularNumber","subject","authority","recipientNote","content","pdfFile"].forEach(id=>$(id).value="");
-  selectedEmployees.clear();renderEmployeeChoices();await loadCirculars()
+  selectedEmployees.clear();
+  renderEmployeeChoices();
+  await loadCirculars()
  }catch(e){
   if(cid){
    await db.from("notif_recipients").delete().eq("circular_id",cid);
@@ -897,8 +1240,14 @@ function setupApprovalCanvas(role){
  x.setTransform(ratio,0,0,ratio,0,0);
  x.lineWidth=2.5;x.lineCap="round";x.lineJoin="round";x.strokeStyle="#153d2b";
  let active=false,point=e=>{let b=c.getBoundingClientRect();return{x:e.clientX-b.left,y:e.clientY-b.top}};
- c.onpointerdown=e=>{active=true;c.setPointerCapture(e.pointerId);let p=point(e);x.beginPath();x.moveTo(p.x,p.y);approvalHasSignature[role]=true};
- c.onpointermove=e=>{if(!active)return;let p=point(e);x.lineTo(p.x,p.y);x.stroke()};
+ c.onpointerdown=e=>{
+  active=true;c.setPointerCapture(e.pointerId);
+  let p=point(e);x.beginPath();x.moveTo(p.x,p.y);approvalHasSignature[role]=true
+ };
+ c.onpointermove=e=>{
+  if(!active)return;
+  let p=point(e);x.lineTo(p.x,p.y);x.stroke()
+ };
  c.onpointerup=()=>active=false;
  c.onpointercancel=()=>active=false
 }
@@ -954,7 +1303,10 @@ async function getApprovalData(role){
  catch(e){console.warn(e);return null}
 }
 
-function closeReport(){hide("reportSection");currentReportCircularId=""}
+function closeReport(){
+ hide("reportSection");
+ currentReportCircularId=""
+}
 
 async function showReport(circularId,scroll=true){
  let {data:c,error}=await db.from("notif_circulars").select("*").eq("id",circularId).single();
@@ -976,7 +1328,9 @@ async function showReport(circularId,scroll=true){
   if(r.receipt?.acknowledged&&r.receipt?.signature_path){
    let u=await getSignatureImageUrl(r.receipt.signature_path);
    sig=u?`<img class="report-signature" src="${escapeHTML(u)}" alt="توقيع الموظف">`:"<span>تعذر عرض التوقيع</span>"
-  }else if(r.receipt?.acknowledged)sig="<span>لا توجد صورة</span>";
+  }else if(r.receipt?.acknowledged){
+   sig="<span>لا توجد صورة</span>"
+  }
   rows.push(`<tr><td>${escapeHTML(e.full_name||"—")}</td><td>${escapeHTML(e.job_title||"—")}</td><td>${r.receipt?.acknowledged?"تم الإقرار":"لم يتم الإقرار"}</td><td>${r.receipt?.signed_at?formatReportDateTime(r.receipt.signed_at):"—"}</td><td>${sig}</td></tr>`)
  }
 
@@ -1006,12 +1360,22 @@ async function showReport(circularId,scroll=true){
  let th=`<div class="tablewrap"><table><thead><tr><th style="width:22%">اسم الموظف</th><th style="width:18%">المسمى الوظيفي</th><th style="width:15%">حالة الإقرار</th><th style="width:25%">تاريخ الإقرار</th><th style="width:20%">التوقيع الإلكتروني</th></tr></thead><tbody>`;
  let end="</tbody></table></div>";
 
+ /* الترويسة نفسها داخل التقرير */
  let heading=`
  <div class="report-page-heading">
-  <h2>تقرير متابعة تبليغ تعميم</h2>
-  <p>وزارة التعليم - الإدارة العامة للتعليم بمنطقة الجوف<br>مدرسة عبدالله بن مسعود الابتدائية</p>
+  <div class="report-heading-ministry">
+   وزارة التعليم | الإدارة العامة للتعليم بمنطقة الجوف
+  </div>
+  <div class="report-heading-brand">
+   <div class="report-heading-icon">🔔</div>
+   <div class="report-heading-text">
+    <h2>منصة التعاميم والتبليغات</h2>
+    <p>مدرسة عبدالله بن مسعود</p>
+   </div>
+  </div>
+  <p style="font-weight:bold;color:#315b47">تقرير متابعة تبليغ تعميم</p>
  </div>
- <hr>
+
  <div class="report-summary">
   <span><strong>رقم التعميم:</strong> ${escapeHTML(c.circular_number)}</span>
   <span><strong>التاريخ:</strong> ${formatReportDate(c.circular_date)}</span>
@@ -1037,7 +1401,10 @@ async function showReport(circularId,scroll=true){
 }
 
 async function printReport(){
- if(!$("reportContent").innerHTML.trim()){alert("يرجى عرض تقرير التعميم أولاً");return}
+ if(!$("reportContent").innerHTML.trim()){
+  alert("يرجى عرض تقرير التعميم أولاً");
+  return
+ }
  let imgs=[...$("reportContent").querySelectorAll("img")];
  await Promise.all(imgs.map(i=>i.complete&&i.naturalWidth?Promise.resolve():new Promise(r=>{
   i.addEventListener("load",r,{once:true});
@@ -1086,13 +1453,17 @@ async function deleteEmployee(id){
  if(!e)return;
  if(!confirm("هل تريد حذف الموظف "+e.full_name+"؟ تأكد من عدم ارتباطه بتعاميم سابقة."))return;
  let {error}=await db.from("notif_employees").delete().eq("id",id);
- if(error){alert("تعذر الحذف. قد يكون الموظف مرتبطًا بتعاميم سابقة.\n"+error.message);return}
+ if(error){
+  alert("تعذر الحذف. قد يكون الموظف مرتبطًا بتعاميم سابقة.\n"+error.message);
+  return
+ }
  await loadEmployees()
 }
 
 db.auth.onAuthStateChange((event)=>{
  if(event==="SIGNED_OUT"&&!new URLSearchParams(location.search).has("receipt")){
-  hide("dashboard");show("loginPage")
+  hide("dashboard");
+  show("loginPage")
  }
 });
 
